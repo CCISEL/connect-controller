@@ -1,11 +1,11 @@
 'use strict'
 
-const forumsDb = require('./forumsDb')
+const forumsDb = require('./../db/forumsDb')
 
 module.exports = {
-  'index': index, // <=> get <=> get_index
-  'index_id': index_id,  // <=> get_id <=> get_index_id 
-  'index_id_teams': index_id_teams
+  'index': index, // <=> get_index
+  'index_id': index_id,  // <=> get_index_id 
+  'index_id_teams': index_id_members
 }
 
 /* GET forums listing. */
@@ -27,7 +27,7 @@ function index_id(id) {
 }
 
 /* GET members */
-function index_id_teams(id) {
+function index_id_members(id) {
   const forum = forumsDb[id]
   return { 
     title: forum.groupname + " Members",
