@@ -2,12 +2,6 @@
 
 const controller = require('./../lib/connectController')
 
-module.exports.testLoadControllers = function(test) {
-    controller(__dirname + './../controllers')
-    test.expect(0)
-    test.done()
-}
-
 module.exports.testParseMethodNameWithoutParameters = function(test) {
     testParseMethodName(
         function get_members() {}, // actual
