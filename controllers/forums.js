@@ -5,7 +5,7 @@ const forumsDb = require('./../db/forumsDb')
 module.exports = {
   'index': index, // <=> get_index
   'index_id': index_id,  // <=> get_index_id 
-  'index_id_teams': index_id_members
+  'index_id_members': index_id_members
 }
 
 /* GET forums listing. */
