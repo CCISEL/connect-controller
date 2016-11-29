@@ -34,11 +34,13 @@ function testParseMethodName(method, expected, test) {
     /**
      * Act
      */
-    test.expect(1)
-    const routePath = controller.parseMethodName(method.name)
+    test.expect(3)
+    const routeInfo = new controller.RouteInfo(method.name, method)
     /**
      * Assert
      */
-    test.equal(routePath, expected)
+    test.equal(routeInfo.path, expected)
+    test.equal(routeInfo.handler, method)
+    test.equal(routeInfo.method, 'get')
     test.done()   
 }
