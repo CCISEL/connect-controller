@@ -1,4 +1,7 @@
-The connect-controller let you create a connect or express middleware handler
+# connect-controller
+
+The [connect-controller](https://www.npmjs.com/package/connect-controller)
+lets you create a connect or express middleware handler
 from a plain object without requiring any dependencies of http, or express, or
 anything related with web application domain, like `resp.query.someArg`,  or
 `resp.send(data)`, or something else. Put it simply, `someArg` is just a method
@@ -13,7 +16,7 @@ Besides that there are some keywords that can be used to parametrize _Actions_
 following additional conventions, such as: 
    * prefix HTTP method, e.g. `get_<action name>`, `post_<action name>`, etc; 
    * `req`, `res` and `next` are reserved parameters names (optional in action arguments
-   list) mapping to Middleware `req`, `res` and `next`.
+   list) binding to Middleware `req`, `res` and `next`.
    * `index` reserved method name, which maps to a route corresponding to the Controller's
    name
 
@@ -24,7 +27,7 @@ following additional conventions, such as:
 
 ## Usage
 
-Given for example a controller `forums.js` located in application route `/controller`
+Given for example a controller `forums.js` located in application root `/controller`
 folder you may add all `forums.js` actions as routes of an express `app` just doing:
 
 ```js
@@ -34,12 +37,12 @@ const app = express()
 app.use(connectCtr()) // loads all controllers located in controllers folder
 /**
  * Alternatives:
- * app.use(connectCtr(path)) // loads from a different path
- * app.use(connectCtr(require('./controllers/forums.js'))) // loads from a different path
+ * app.use(connectCtr(path))                                  // loads from a different path
+ * app.use(connectCtr(require('./controllers/forums.js')))    // loads a single controller object
  */
 ```
 
-In this case `forums.js` could be defined as:
+In this case `forums.js` could be for example:
 
 ```js
 module.exports = {
@@ -49,11 +52,11 @@ module.exports = {
 }
 
 function index(name, date) { // bind to req.query.name and req.query.date
-  const ctx = {              // <=> res.render(ctx, 'view /views/forums/index.__')
+  const ctx = {              
     title: 'Forums list',
     forums: listOfForums.filterBy(name, date)
   }
-  return ctx
+  return ctx  // <=> res.render(ctx, 'view /views/forums/index.__')
 }
 
 function index_id(id, res) { // bind to req.params.id
