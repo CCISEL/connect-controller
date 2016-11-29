@@ -14,6 +14,7 @@ const bodyParser = require('body-parser')
  * Import local libraries
  */
 const routeUsers = require('./routes/users')
+const controller = require('./lib/connectController')
 
 /**
  * Instantiate...
@@ -31,6 +32,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
+/**
+ * Add controller
+ */
+const mws = controller()
+app.use(mws)
 
 /**
  * Add Routes
