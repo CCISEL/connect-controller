@@ -2,7 +2,7 @@
 
 const express = require('express')
 const router = express.Router()
-const usersDb = require('./usersDb')
+const usersDb = require('./../db/usersDb')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
