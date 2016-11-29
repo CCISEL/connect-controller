@@ -13,7 +13,7 @@ const userCtr = {
 }
 
 /**
- * mws is an Array of Middlewares (Router objects).
+ * mws is a Middleware of Middlewares (Router objects).
  * Each mws element is a Router corresponding to each controller.
  * In this case there is a single Router corresponding to userCtr source.
  * In turn, each Router contains a Middleware for each method of the controller. 
@@ -22,13 +22,13 @@ const mws = controller(userCtr)
 
 module.exports.testLoadControllers = function(test) {
     test.expect(1)
-    test.equal(mws.length, 1)    // 1 controller for userCtr object
+    test.equal(mws.stack.length, 5)    // 5 actions/handlers for userCtr object
     test.done() 
 }
 
 module.exports.testControllerIndex = function(test) {
     test.expect(1)
-    const router = mws[0]
+    const router = mws
     const req = { 'url': '/', 'method': 'get'}
     const res = { 'render': (view, ctx) => test.equal(ctx, 'I am index')}
     router(req, res)
@@ -37,7 +37,7 @@ module.exports.testControllerIndex = function(test) {
 
 module.exports.testControllerIndexId = function(test) {
     test.expect(1)
-    const router = mws[0]
+    const router = mws
     const req = { 'url': '/27', 'method': 'get'}
     const res = { 'render': (view, ctx) => test.equal(ctx, '27')}
     router(req, res)
@@ -46,7 +46,7 @@ module.exports.testControllerIndexId = function(test) {
 
 module.exports.testControllerDummyNrMembers = function(test) {
     test.expect(1)
-    const router = mws[0]
+    const router = mws
     const req = { 'url': '/dummy/31/members', 'method': 'get'}
     const res = { 'render': (view, ctx) => test.equal(ctx, '31')}
     router(req, res)
@@ -55,7 +55,7 @@ module.exports.testControllerDummyNrMembers = function(test) {
 
 module.exports.testControllerRouteAndQueryParameters = function(test) {
     test.expect(3)
-    const router = mws[0]
+    const router = mws
     const req = { 
         'url': '/dummy/71/teams?arg1=abc&arg2=super', 
         'method': 'get',
