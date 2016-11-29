@@ -6,7 +6,10 @@ const userCtr = {
     'index': function () {return 'I am index'},
     'index_id': function (id) {return id}, 
     'index_id_members':  function () {return 'I am index_id_members'},
-    'dummy_nr_members':  function (nr) {return nr}
+    'dummy_nr_members':  function (nr) {return nr},
+    'dummy_nr_teams':  function (nr, arg1, arg2) {return {
+        'nr': nr, 'arg1': arg1, 'arg2': arg2
+    }},
 }
 
 /**
@@ -48,4 +51,21 @@ module.exports.testControllerDummyNrMembers = function(test) {
     const res = { 'render': (view, ctx) => test.equal(ctx, '31')}
     router(req, res)
     test.done()
+}
+
+module.exports.testControllerRouteAndQueryParameters = function(test) {
+    test.expect(3)
+    const router = mws[0]
+    const req = { 
+        'url': '/dummy/71/teams?arg1=abc&arg2=super', 
+        'method': 'get',
+        'query': {'arg1': 'abc', 'arg2': 'super'}
+    }
+    const res = { 'render': (view, ctx) => {
+        test.equal(ctx.nr, '71')
+        test.equal(ctx.arg1, 'abc')
+        test.equal(ctx.arg2, 'super')
+        test.done()
+    }}
+    router(req, res)
 }
