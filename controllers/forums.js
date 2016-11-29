@@ -17,13 +17,13 @@ function index() {
 }
 
 /* GET forum details. */
-function index_id(id) {
+function index_id(id, res) {
   const forum = forumsDb[id]
   // To Do: if error throw error
-  return { 
-    title: 'Details',
-    forum: forum 
-  }
+  res.json({ 
+    'title': 'Details',
+    'id': id 
+  })
 }
 
 /* GET members */
