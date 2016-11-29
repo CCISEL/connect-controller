@@ -14,7 +14,7 @@ const bodyParser = require('body-parser')
  * Import local libraries
  */
 const routeUsers = require('./routes/users')
-const controller = require('./../index')
+const controller = require('connect-controller')
 
 /**
  * Instantiate...
