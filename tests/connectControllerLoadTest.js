@@ -4,8 +4,9 @@ const controller = require('./../lib/connectController')
 
 const userCtr = {
     'index': function () {return 'I am index'},
-    'index_id': function () {return 'I am index_id'}, 
-    'index_id_members':  function () {return 'I am index_id_members'}
+    'index_id': function (id) {return id}, 
+    'index_id_members':  function () {return 'I am index_id_members'},
+    'dummy_nr_members':  function (nr) {return nr}
 }
 
 /**
@@ -35,16 +36,16 @@ module.exports.testControllerIndexId = function(test) {
     test.expect(1)
     const router = mws[0]
     const req = { 'url': '/27', 'method': 'get'}
-    const res = { 'render': (view, ctx) => test.equal(ctx, 'I am index_id')}
+    const res = { 'render': (view, ctx) => test.equal(ctx, '27')}
     router(req, res)
     test.done()
 }
 
-module.exports.testControllerIndexIdMembers = function(test) {
+module.exports.testControllerDummyNrMembers = function(test) {
     test.expect(1)
     const router = mws[0]
-    const req = { 'url': '/31/members', 'method': 'get'}
-    const res = { 'render': (view, ctx) => test.equal(ctx, 'I am index_id_members')}
+    const req = { 'url': '/dummy/31/members', 'method': 'get'}
+    const res = { 'render': (view, ctx) => test.equal(ctx, '31')}
     router(req, res)
     test.done()
 }
