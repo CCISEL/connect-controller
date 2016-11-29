@@ -1,4 +1,10 @@
 {
+  "author": "Miguel Gamboa <miguelgamboa@outlook.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CCISEL/connect-controller.git"
+  },
+  "license": "GNU",
   "dependencies": {
     "body-parser": "~1.13.2",
     "connect-controller": "^1.0.0",
