@@ -12,9 +12,9 @@ By default, every controller method (_Action_) is mapped to a route, following t
 server-side controller convention (according to the
 [Controller definition of Rails]( https://en.wikipedia.org/wiki/Ruby_on_Rails#Technical_overview))
 
-For example, given a domain service `footballDb` with a promises based API, consider the 
+For example, given a domain service `footballDb` with a promises based API, **compare** the 
 two approaches of implementing a `football` route with a single action `leagueTable`, the
-former using express `Router` and the latter based on controller:
+former using express `Router` and the latter based on `controller-controller`:
 
 ```js
 const router = express.Router()
@@ -39,7 +39,7 @@ app.use('football', connectCtr(controller))
 ```  
 (see full [example/controllers/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js))
 
-Note in the latter example, there is no need of arguments `req`, `res`, `next`. Moreover, 
+**Note** in the latter example, there is no need of arguments `req`, `res`, `next`. Moreover, 
 the `id` argument is automatically bound to the corresponding route parameter. You do not need
 either to render the view. By default the `connectCtr` consider the view with the same name
 of the action method and located in a folder `views` (and sub folder with the controller
