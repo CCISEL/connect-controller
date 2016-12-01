@@ -14,6 +14,7 @@ const bodyParser = require('body-parser')
  * Import local libraries
  */
 const routeUsers = require('./routes/users')
+const routeFootball = require('./routes/football')
 const controller = require('connect-controller')
 
 /**
@@ -43,6 +44,7 @@ app.use(mws)
  * Add Routes
  */
 app.use('/users', routeUsers)
+app.use(routeFootball) // <=> Route on '/' with same features of /football controller  
 
 /**
  * Error-handling middlewares
