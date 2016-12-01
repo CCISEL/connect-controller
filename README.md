@@ -14,7 +14,7 @@ server-side controller convention (according to the
 
 For example, given a domain service `footballDb` with a promises based API, **compare** the 
 two approaches of implementing a `football` route with a single action `leagueTable`, the
-former using express `Router` and the latter based on `controller-controller`:
+former using express `Router` and the latter based on `connect-controller`:
 
 ```js
 const router = express.Router()
