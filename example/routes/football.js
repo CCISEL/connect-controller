@@ -13,6 +13,7 @@ module.exports = (function(){
                 league.title = 'League Table'
                 res.render('football/leagueTable', league)
             })
+            .catch(err => next(err))
     })
 
     router.get('/leagues', (req, res, next) => {
@@ -25,6 +26,7 @@ module.exports = (function(){
                     'leagues': leagues
                 })
             })
+            .catch(err => next(err))
     })
     return router
     
