@@ -19,6 +19,13 @@ module.exports = (function(){
     }
 
     function leagues(cb) {
+        const path = FOOTBALL_PATH
+        const headers = FOOTBALL_CREDENTIALS
+        httpGetAsJson(FOOTBALL_HOST, path, headers, (err, arr) => {
+            if(err) return cb(err)
+            if(arr.error) return cb(new Error("No leagues !!!! You probably reached your request limit. Get your free API token from http://api.football-data.org/!!! --------- Message from football-data.org:" + arr.error))
+            cb(null, arr.map(item => new League(item)))
+        })
     }
 
     function leagueTable(id, cb) {
@@ -32,12 +39,27 @@ module.exports = (function(){
         })
     }
 
+    /**
+     * Domain Entity -- League 
+     */
+    function League(obj) {
+        this.id = obj.id
+        this.caption = obj.caption
+        this.year = obj.year
+    }
+
+    /**
+     * Domain Entity -- LeagueTable 
+     */
     function LeagueTable(id, obj) {
         this.id = id
         this.caption = obj.leagueCaption
         this.teams  = obj.standing.map(std => new Team(std))
     }
 
+    /**
+     * Domain Entity -- Team 
+     */
     function Team(obj) {
         const path = obj._links.team.href.split('/')
         this.id = path[path.length - 1]
@@ -47,6 +69,9 @@ module.exports = (function(){
         this.goals = obj.goals
     }
 
+    /**
+     * Utility auxiliary function -- httpGetAsJson
+     */
     function httpGetAsJson(host, path, headers, cb) {
         options = {
             'host': host,
@@ -63,6 +88,9 @@ module.exports = (function(){
         })    
     }
 
+    /**
+     * Utility auxiliary function -- loadCredentials
+     */
     function loadCredentials(file) {
         /**
          * Change it if you find a better way of synchronously 
