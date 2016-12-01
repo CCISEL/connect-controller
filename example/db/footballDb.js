@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = (function(){
     /**
      * Import npm modules
@@ -73,7 +75,7 @@ module.exports = (function(){
      * Utility auxiliary function -- httpGetAsJson
      */
     function httpGetAsJson(host, path, headers, cb) {
-        options = {
+        const options = {
             'host': host,
             'path': path
         }
