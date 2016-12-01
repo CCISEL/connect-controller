@@ -11,12 +11,12 @@ module.exports = (function(){
      */
     return {
         'leagues': leagues,
-        'leagueTable': leagueTable
+        'leagueTable_id': leagueTable_id
     }
     /**
      * football module API -- leagueTable
      */
-    function leagueTable(id) { // Auto parses id from query-string
+    function leagueTable_id(id) { // Auto parses id from query-string
         return footballDb
             .leagueTable(id)
             .then(league => {
@@ -44,7 +44,7 @@ module.exports = (function(){
      */
     function leaguesWithLinks(leagues) {
         return leagues.map(item => {
-            item.leagueHref = "/football/leagueTable?id=" + item.id
+            item.leagueHref = "/football/leagueTable/" + item.id
             return item 
         })
     }
