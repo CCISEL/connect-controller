@@ -16,26 +16,27 @@ module.exports = (function(){
     /**
      * football module API -- leagueTable
      */
-    function leagueTable(id, req, res, next) { // Auto parses id from query-string
-        footballDb.leagueTable(id, (err, league) => {
-            if(err) return next(err)
-            league.title = 'League Table'
-            res.render('football/leagueTable', league)
-        })    
+    function leagueTable(id) { // Auto parses id from query-string
+        return footballDb
+            .leagueTable(id)
+            .then(league => {
+                league.title = 'League Table'
+                return league
+            })
     }
     /**
      * football module API -- leagues
      */
-    function leagues(req, res, next) {
-        const query = req.query
-        footballDb.leagues((err, leagues) => {
-            if(err) return next(err)
-            leagues = leaguesWithLinks(leagues)
-            res.render('football/leagues', {
-                'title':'Leagues',
-                'leagues': leagues
+    function leagues() {
+        return footballDb
+            .leagues()
+            .then(leagues => {
+                leagues = leaguesWithLinks(leagues)
+                return {
+                    'title':'Leagues',
+                    'leagues': leagues
+                }
             })
-        })    
     }
 
     /**

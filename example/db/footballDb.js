@@ -20,29 +20,27 @@ module.exports = (function(){
         'leagueTable': leagueTable
     }
 
-    function leagues(cb) {
+    function leagues() {
         const path = FOOTBALL_HOST + FOOTBALL_PATH
         const options = { 'headers': FOOTBALL_CREDENTIALS }
-        fetch(path, options)
+        return fetch(path, options)
             .then(res => res.json())
             .then(arr => {
-                if(arr.error) cb(new Error("No leagues !!!! You probably reached your request limit. Get your free API token from http://api.football-data.org/!!! --------- Message from football-data.org:" + arr.error))
-                else cb(null, arr.map(item => new League(item)))
+                if(arr.error) throw new Error("No leagues !!!! You probably reached your request limit. Get your free API token from http://api.football-data.org/!!! --------- Message from football-data.org:" + arr.error)
+                return arr.map(item => new League(item))
             })
-            .catch(err => cb(err))
     }
 
-    function leagueTable(id, cb) {
+    function leagueTable(id) {
         const path =  FOOTBALL_HOST + FOOTBALL_PATH + id + '/leagueTable'
         const options = { 'headers': FOOTBALL_CREDENTIALS }
-        fetch(path, options)
+        return fetch(path, options)
             .then(res => res.json())
             .then(obj => {
-                if(obj.error) return cb(new Error("There is no League with id = " + id))
-                if(!obj.standing) return cb(new Error("There is no Table for id = " + id))
-                cb(null, new LeagueTable(id, obj))
+                if(obj.error) throw new Error("There is no League with id = " + id)
+                if(!obj.standing) throw new Error("There is no Table for id = " + id)
+                return new LeagueTable(id, obj)
             })
-            .catch(err => cb(err))
     }
 
     /**
