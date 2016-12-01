@@ -16,7 +16,7 @@ module.exports = (function(){
     /**
      * football module API -- leagueTable
      */
-    function leagueTable_id(id) { // Auto parses id from query-string
+    function leagueTable_id(id) { // Auto parses id from route parameters
         return footballDb
             .leagueTable(id)
             .then(league => {
