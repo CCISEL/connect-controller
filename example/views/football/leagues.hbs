@@ -1,0 +1,22 @@
+<div class="container">
+    <h1>Football Leagues</h1>
+</div>
+<div class="container well">
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Year</th><th>Caption</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each leagues}}
+                <tr>
+                    <td>{{year}}</td>
+                    <td><a href='{{leagueHref}}'>{{caption}}</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

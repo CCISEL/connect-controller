@@ -19,7 +19,8 @@ module.exports = (function(){
     function leagueTable(id, req, res, next) { // Auto parses id from query-string
         footballDb.leagueTable(id, (err, league) => {
             if(err) return next(err)
-            res.json(league)
+            league.title = 'League Table'
+            res.render('football/leagueTable', league)
         })    
     }
     /**
@@ -30,7 +31,10 @@ module.exports = (function(){
         footballDb.leagues((err, leagues) => {
             if(err) return next(err)
             leagues = leaguesWithLinks(leagues)
-            res.json(leagues)
+            res.render('football/leagues', {
+                'title':'Leagues',
+                'leagues': leagues
+            })
         })    
     }
 
@@ -39,7 +43,7 @@ module.exports = (function(){
      */
     function leaguesWithLinks(leagues) {
         return leagues.map(item => {
-            item.leagueHref = "/leagueTable?id=" + item.id
+            item.leagueHref = "/football/leagueTable?id=" + item.id
             return item 
         })
     }
