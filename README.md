@@ -12,6 +12,40 @@ By default, every controller method (_Action_) is mapped to a route, following t
 server-side controller convention (according to the
 [Controller definition of Rails]( https://en.wikipedia.org/wiki/Ruby_on_Rails#Technical_overview))
 
+For example, given a domain service `footballDb` with a promises based API, consider the 
+two approaches of implementing a `football` route with a single action `leagueTable`, the
+former using express `Router` and the latter based on controller:
+
+```js
+const router = express.Router()
+router.get('/leagueTable/:id', (req, res, next) => {
+  const id = req.params.id
+  footballDb
+      .leagueTable(id)
+      .then(league => {
+          res.render('football/leagueTable', league)
+      })
+      .catch(err => next(err))
+})
+app.use('football', router)
+```
+(see full [example/routes/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/routes/football.js))
+
+```js
+const controller = {
+  leagueTable_id: (id) => footballDb.leagueTable(id)
+}
+app.use('football', connectCtr(controller))
+```  
+(see full [example/controllers/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js))
+
+Note in the latter example, there is no need of arguments `req`, `res`, `next`. Moreover, 
+the `id` argument is automatically bound to the corresponding route parameter. You do not need
+either to render the view. By default the `connectCtr` consider the view with the same name
+of the action method and located in a folder `views` (and sub folder with the controller
+module name). Finally you do not need to handle errors too.
+
+
 Besides that there are some keywords that can be used to parametrize _Actions_
 following additional conventions, such as: 
    * prefix HTTP method, e.g. `get_<action name>`, `post_<action name>`, etc; 
