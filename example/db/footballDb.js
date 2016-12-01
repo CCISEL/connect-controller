@@ -4,12 +4,12 @@ module.exports = (function(){
     /**
      * Import npm modules
      */
-    const http = require('http')
     const fs = require('fs')
+    const fetch = require('node-fetch')
     /**
      * Constants
      */
-    const FOOTBALL_HOST = 'api.football-data.org'
+    const FOOTBALL_HOST = 'http://api.football-data.org'
     const FOOTBALL_PATH = '/v1/soccerseasons/'
     const FOOTBALL_CREDENTIALS = loadCredentials(__dirname +  '/footballCredentials.js')
     /**
@@ -21,24 +21,28 @@ module.exports = (function(){
     }
 
     function leagues(cb) {
-        const path = FOOTBALL_PATH
-        const headers = FOOTBALL_CREDENTIALS
-        httpGetAsJson(FOOTBALL_HOST, path, headers, (err, arr) => {
-            if(err) return cb(err)
-            if(arr.error) return cb(new Error("No leagues !!!! You probably reached your request limit. Get your free API token from http://api.football-data.org/!!! --------- Message from football-data.org:" + arr.error))
-            cb(null, arr.map(item => new League(item)))
-        })
+        const path = FOOTBALL_HOST + FOOTBALL_PATH
+        const options = { 'headers': FOOTBALL_CREDENTIALS }
+        fetch(path, options)
+            .then(res => res.json())
+            .then(arr => {
+                if(arr.error) cb(new Error("No leagues !!!! You probably reached your request limit. Get your free API token from http://api.football-data.org/!!! --------- Message from football-data.org:" + arr.error))
+                else cb(null, arr.map(item => new League(item)))
+            })
+            .catch(err => cb(err))
     }
 
     function leagueTable(id, cb) {
-        const path = FOOTBALL_PATH + id + '/leagueTable'
-        const headers = FOOTBALL_CREDENTIALS
-        httpGetAsJson(FOOTBALL_HOST, path, headers, (err, obj) => {
-            if(err) return cb(err)
-            if(obj.error) return cb(new Error("There is no League with id = " + id))
-            if(!obj.standing) return cb(new Error("There is no Table for id = " + id))
-            cb(null, new LeagueTable(id, obj))
-        })
+        const path =  FOOTBALL_HOST + FOOTBALL_PATH + id + '/leagueTable'
+        const options = { 'headers': FOOTBALL_CREDENTIALS }
+        fetch(path, options)
+            .then(res => res.json())
+            .then(obj => {
+                if(obj.error) return cb(new Error("There is no League with id = " + id))
+                if(!obj.standing) return cb(new Error("There is no Table for id = " + id))
+                cb(null, new LeagueTable(id, obj))
+            })
+            .catch(err => cb(err))
     }
 
     /**
@@ -69,25 +73,6 @@ module.exports = (function(){
         this.name = obj.teamName
         this.points = obj.points
         this.goals = obj.goals
-    }
-
-    /**
-     * Utility auxiliary function -- httpGetAsJson
-     */
-    function httpGetAsJson(host, path, headers, cb) {
-        const options = {
-            'host': host,
-            'path': path
-        }
-        if(headers) options.headers = headers
-        http.get(options, (resp) => {
-            let res = ''
-            resp.on('error', cb)
-            resp.on('data', chunck => res += chunck.toString())
-            resp.on('end', () => {
-                cb(null, JSON.parse(res))
-            })
-        })    
     }
 
     /**
