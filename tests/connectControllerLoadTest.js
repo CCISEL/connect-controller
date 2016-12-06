@@ -3,6 +3,7 @@
 const controller = require('./../lib/connectController')
 
 const userCtr = {
+    'groups':  function (nr, res) { res.render('viewName', nr) },
     'index': function () {return 'I am index'},
     'index_id': function (id) {return id}, 
     'index_id_members':  function () {return 'I am index_id_members'},
@@ -22,7 +23,7 @@ const mws = controller(userCtr)
 
 module.exports.testLoadControllers = function(test) {
     test.expect(1)
-    test.equal(mws.stack.length, 5)    // 5 actions/handlers for userCtr object
+    test.equal(mws.stack.length, 6)    // 5 actions/handlers for userCtr object
     test.done() 
 }
 
@@ -49,6 +50,20 @@ module.exports.testControllerDummyNrMembers = function(test) {
     const router = mws
     const req = { 'url': '/dummy/31/members', 'method': 'get'}
     const res = { 'render': (view, ctx) => test.equal(ctx, '31')}
+    router(req, res)
+    test.done()
+}
+
+module.exports.testControllerGroups = function(test) {
+    test.expect(1)
+    const router = mws
+    const req = { 
+        'url': '/groups?nr=24', 
+        'method': 'get',
+        'query': {'nr': '24' }
+    }
+    const res = { 'render': (view, ctx) =>
+        test.equal(ctx, '24')}
     router(req, res)
     test.done()
 }

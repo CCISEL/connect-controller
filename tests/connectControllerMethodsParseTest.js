@@ -35,7 +35,7 @@ function testParseMethodName(method, expected, test) {
      * Act
      */
     test.expect(3)
-    const routeInfo = new controller.RouteInfo(null, method.name, method) // (target, method name, method)
+    const routeInfo = new controller.RouteInfo(null, '', method.name, method) // (target, method name, method)
     /**
      * Assert
      */
