@@ -8,9 +8,9 @@ anything related with web application domain, like `resp.query.someArg`,  or
 argument and `resp.send(data)` is just the returned data (`return data`), or the
 content of the returned `Promise`.
 
-By default, every controller method (_Action_) is mapped to a route, following the
-server-side controller convention (according to the
-[Controller definition of Rails]( https://en.wikipedia.org/wiki/Ruby_on_Rails#Technical_overview))
+By default, every controller method (_Action_) is mapped to a route with the path
+`/controllerName/actionName`, following the server-side controller conventions
+(according to the [Controller definition of Rails]( https://en.wikipedia.org/wiki/Ruby_on_Rails#Technical_overview))
 
 For example, given a domain service `footballDb` with a promises based API, **compare** the 
 two approaches of implementing a `football` route with a single action `leagueTable`, the
