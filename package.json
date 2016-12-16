@@ -1,6 +1,6 @@
 {
   "name": "connect-controller",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Auto-bind plain controller objects to express Router (as MVC) and render views based on actions result (sync or async)",
   "main": "index.js",
   "scripts": {
