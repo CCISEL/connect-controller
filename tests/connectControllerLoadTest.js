@@ -5,7 +5,7 @@ const controller = require('./../lib/connectController')
 const userCtr = {
     'groups':  function (nr, res) { res.render('viewName', nr) },
     'index': function () {return 'I am index'},
-    'index_id': function (id) {return id}, 
+    'index_teamId': function (teamId) {return teamId}, 
     'index_id_members':  function () {return 'I am index_id_members'},
     'dummy_nr_members':  function (nr) {return nr},
     'dummy_nr_teams':  function (nr, arg1, arg2) {return {
