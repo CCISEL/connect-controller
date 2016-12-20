@@ -1,5 +1,7 @@
 # connect-controller
 
+[![Build](https://travis-ci.org/CCISEL/connect-controller.svg?branch=master)](https://travis-ci.org/CCISEL/connect-controller)
+
 The [connect-controller](https://www.npmjs.com/package/connect-controller)
 lets you create a connect or express middleware handler
 from a plain object without requiring any dependencies of http, or express, or
