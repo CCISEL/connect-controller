@@ -4,7 +4,7 @@
   "description": "Auto-bind plain controller objects to express Router (as MVC) and render views based on actions result (sync or async)",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/nodeunit/bin/nodeunit tests"
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/nodeunit/bin/nodeunit --report lcovonly -- tests && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "keywords": [
     "connect",
@@ -23,6 +23,8 @@
     "express": "^4.14.0"
   },
   "devDependencies": {
+    "coveralls": "^2.11.15",
+    "istanbul": "^0.4.5",
     "nodeunit": "^0.10.2"
   }
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-const controller = require('./../lib/connectController')
+const controller = require('./../index')
 
 const userCtr = {
     'groups':  function (nr, res) { res.render('viewName', nr) },

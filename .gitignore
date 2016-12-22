@@ -17,3 +17,6 @@ data
 
 # don't store SSL certs in repo!
 ssl
+
+# ignore lcov report
+coverage

@@ -1,6 +1,7 @@
 # connect-controller
 
 [![Build](https://travis-ci.org/CCISEL/connect-controller.svg?branch=master)](https://travis-ci.org/CCISEL/connect-controller)
+[![Coverage Status](https://coveralls.io/repos/github/CCISEL/connect-controller/badge.svg?branch=master)](https://coveralls.io/github/CCISEL/connect-controller?branch=master)
 
 The [connect-controller](https://www.npmjs.com/package/connect-controller)
 lets you create a connect or express middleware handler
