@@ -1,6 +1,6 @@
 'use strict'
 
-const controller = require('./../lib/connectController')
+const controller = require('./../index')
 
 module.exports.testParseMethodNameWithoutParameters = function(test) {
     testParseMethodName(
