@@ -10,7 +10,7 @@ module.exports = function(router){
 
         testControllerIndex : function(test) {
             test.expect(1)
-            const req = { 'url': '/', 'method': 'get'}
+            const req = { 'url': '/users', 'method': 'get'}
             const res = { 'render': (view, ctx) => test.equal(ctx, 'I am index')}
             router(req, res)
             test.done()
@@ -18,7 +18,7 @@ module.exports = function(router){
 
         testControllerIndexId : function(test) {
             test.expect(1)
-            const req = { 'url': '/27', 'method': 'get'}
+            const req = { 'url': '/users/27', 'method': 'get'}
             const res = { 'render': (view, ctx) => test.equal(ctx, '27')}
             router(req, res)
             test.done()
@@ -26,7 +26,7 @@ module.exports = function(router){
 
         testControllerDummyNrMembers : function(test) {
             test.expect(1)
-            const req = { 'url': '/dummy/31/members', 'method': 'get'}
+            const req = { 'url': '/users/dummy/31/members', 'method': 'get'}
             const res = { 'render': (view, ctx) => test.equal(ctx, '31')}
             router(req, res)
             test.done()
@@ -35,7 +35,7 @@ module.exports = function(router){
         testControllerGroups : function(test) {
             test.expect(1)
             const req = { 
-                'url': '/groups?nr=24', 
+                'url': '/users/groups?nr=24', 
                 'method': 'get',
                 'query': {'nr': '24' }
             }
@@ -48,7 +48,7 @@ module.exports = function(router){
         testControllerRouteAndQueryParameters : function(test) {
             test.expect(3)
             const req = { 
-                'url': '/dummy/71/teams?arg1=abc&arg2=super', 
+                'url': '/users/dummy/71/teams?arg1=abc&arg2=super', 
                 'method': 'get',
                 'query': {'arg1': 'abc', 'arg2': 'super'}
             }
