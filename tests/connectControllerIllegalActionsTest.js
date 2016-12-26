@@ -16,7 +16,9 @@ module.exports.testLoadControllerWithIllegalAction = function(test) {
     test.expect(1)
     const req = { 'url': '/xone/27', 'method': 'get'}
     const res = { 'render': (view, ctx) => { test.ok(false) }}
-    router.use((err, req, res, next) => { test.ok(true) })
+    router.use((err, req, res, next) => { 
+        test.ok(true) 
+        test.done()
+    })
     router(req, res)
-    test.done()
 }
