@@ -24,8 +24,10 @@
     "express": "^4.14.0"
   },
   "devDependencies": {
+    "bluebird": "^3.4.7",
     "coveralls": "^2.11.15",
     "istanbul": "^0.4.5",
-    "nodeunit": "^0.10.2"
+    "nodeunit": "^0.10.2",
+    "q": "^1.4.1"
   }
 }
