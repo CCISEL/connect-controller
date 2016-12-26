@@ -18,14 +18,14 @@ module.exports.testParseMethodNameWithoutParametersNorPrefix = function(test) {
 
 module.exports.testParseMethodNameWithoutGetPrefix = function(test) {
     testParseMethodName(
-        function index_id_members() {},   // actual
+        function index_id_members(id) {},   // actual
         '/:id/members',                   // expected 
         test)
 }
 
 module.exports.testParseMethodNameWithGet = function(test) {
     testParseMethodName(
-        function get_index_id_members() {},   // actual
+        function get_index_id_members(id) {},   // actual
         '/:id/members',                       // expected 
         test)
 }
