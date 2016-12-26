@@ -4,7 +4,7 @@ module.exports = function(router){
     return {
         testLoadControllers: function(test) {
             test.expect(1)
-            test.equal(router.stack.length, 6)    // 5 actions/handlers for userCtr object
+            test.equal(router.stack.length, 8)    // 5 actions/handlers for userCtr object
             test.done() 
         },
 
@@ -26,7 +26,7 @@ module.exports = function(router){
 
         testControllerDummyNrMembers : function(test) {
             test.expect(1)
-            const req = { 'url': '/users/dummy/31/members', 'method': 'get'}
+            const req = { 'url': '/users/dummy/bastof/31/members', 'method': 'get'}
             const res = { 'render': (view, ctx) => test.equal(ctx, '31')}
             router(req, res)
             test.done()
@@ -46,9 +46,9 @@ module.exports = function(router){
         },
 
         testControllerRouteAndQueryParameters : function(test) {
-            test.expect(3)
+            test.expect(4)
             const req = { 
-                'url': '/users/dummy/71/teams?arg1=abc&arg2=super', 
+                'url': '/users/dummy/71/teams/xpto/ola?arg1=abc&arg2=super', 
                 'method': 'get',
                 'query': {'arg1': 'abc', 'arg2': 'super'}
             }
@@ -56,10 +56,33 @@ module.exports = function(router){
                 test.equal(ctx.nr, '71')
                 test.equal(ctx.arg1, 'abc')
                 test.equal(ctx.arg2, 'super')
+                test.equal(ctx.str, 'ola')
                 test.done()
             }}
             router(req, res)
         },
-
+        testControllerActionWithReqAndNext: function(test) {
+            test.expect(1)
+            const req = { 'url': '/users/xone/67', 'method': 'get'}
+            const res = { 'render': (view, ctx) => {} }
+            const next = (ctx) => {
+                test.equal(ctx, '67')
+                test.done()
+            }
+            router(req, res, next)
+        },
+        testControllerActionPost: function(test) {
+            test.expect(1)
+            const req = { 
+                'url': '/users/xone', 
+                'method': 'post',
+                'body': { 'stuff': 73 }
+            }
+            const res = { 'render': (view, ctx) => {
+                test.equal(ctx, '73')
+                test.done()
+            } }
+            router(req, res)
+        }
     }
 }
