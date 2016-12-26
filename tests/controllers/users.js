@@ -9,4 +9,10 @@ module.exports = {
     'dummy_nr_teams':  function (nr, arg1, arg2) {return {
         'nr': nr, 'arg1': arg1, 'arg2': arg2
     }},
+    'xone_stuff': function(req, next) {
+        next(req.params.stuff)
+    },
+    'post_xone': function(stuff) {
+        return stuff
+    }
 }
