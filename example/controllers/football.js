@@ -1,51 +1,50 @@
 'use strict'
 
+const footballDb = require('./../db/footballDb')
 
-module.exports = (function(){
+module.exports = {
     /**
-     * Import modules
+     * Every action parameter (e.g. id) taking part of method's name (e.g. _id_)
+     * is bound to the corresponding argument of req.params (e.g. req.params.id).
      */
-    const footballDb = require('./../db/footballDb')
+    'leagues_id_table': (id, req) => footballDb
+        .leagueTable(id)
+        .then(league => {
+            league.favorites = req.favorites
+            return league
+        })
+    ,
+    
     /**
-     * football module API
+     * Every action parameter (e.g. name) that is NOT part of the method's name
+     * is bound to the corresponding query-string argument (e.g. )
      */
-    return {
-        'leagues': leagues,
-        'leagueTable_id': leagueTable_id
-    }
-    /**
-     * football module API -- leagueTable
-     */
-    function leagueTable_id(id) { // Auto parses id from route parameters
-        return footballDb
-            .leagueTable(id)
-            .then(league => {
-                league.title = 'League Table'
-                return league
-            })
-    }
-    /**
-     * football module API -- leagues
-     */
-    function leagues() {
+    'leagues' : function(name, req) {
+        if(name) name = name.toLowerCase()
         return footballDb
             .leagues()
-            .then(leagues => {
-                leagues = leaguesWithLinks(leagues)
-                return {
-                    'title':'Leagues',
-                    'leagues': leagues
-                }
-            })
-    }
+            .then(leagues => leagues
+                .filter(l => !name || l.caption.toLowerCase().includes(name))
+                .map(addLeaguePath))
+            .then(leagues => { return {
+                'leagues': leagues,
+                'favorites': req.favorites
+            }})
+        
+        function addLeaguePath(league) {
+            league.leagueHref = "/football/leagues/" + league.id + "/table"
+            return league
+        }
+    },
 
     /**
-     * Utility auxiliary function
+     * Whenever an action receives the `res` parameter, the connect-controller
+     * gets out of the way and delegates on that action the responsibility of
+     * sending the response.
+     * So whenever you want to do something different from the default behavior 
+     * you just have to append res to your parameters.
      */
-    function leaguesWithLinks(leagues) {
-        return leagues.map(item => {
-            item.leagueHref = "/football/leagueTable/" + item.id
-            return item 
-        })
+    'index' : function(res) {
+        res.redirect('/football/leagues')
     }
-})()
+}
