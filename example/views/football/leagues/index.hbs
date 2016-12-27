@@ -1,0 +1,21 @@
+{{#extend "title"}}Leagues{{/extend}}
+
+<h3>Football Leagues</h3>
+<div class=" well">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Year</th><th>Caption</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each leagues}}
+            <tr>
+                <td>{{year}}</td>
+                <td><a href='{{leagueHref}}'>{{caption}}</a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+    
