@@ -27,6 +27,7 @@ const controller = require('./../index')
 const app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
+hbs.localsAsTemplateData(app);
 
 /**
  * Add Middlewares
@@ -37,7 +38,10 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use((req, res, next) => { req.favorites = favoritesDb; next(); })
+app.use((req, res, next) => { 
+    res.locals.favorites = favoritesDb // Enhance it with per user favorites based on authentication
+    next()
+})
 
 /**
  * Add controller
