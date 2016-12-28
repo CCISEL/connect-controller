@@ -2,6 +2,7 @@
 
 [![Build](https://travis-ci.org/CCISEL/connect-controller.svg?branch=master)](https://travis-ci.org/CCISEL/connect-controller)
 [![Coverage Status](https://coveralls.io/repos/github/CCISEL/connect-controller/badge.svg?branch=master)](https://coveralls.io/github/CCISEL/connect-controller?branch=master)
+[![Version npm](https://img.shields.io/npm/v/connect-controller.svg)](https://www.npmjs.com/package/connect-controller)
 
 [connect-controller](https://www.npmjs.com/package/connect-controller) allows you to
 create **Plain Controller Objects** with NO [express](https://www.npmjs.com/package/express)
