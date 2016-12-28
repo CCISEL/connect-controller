@@ -9,13 +9,17 @@ const favicon = require('serve-favicon')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const fs = require('fs')
+const favoritesDb = require('./db/favoritesDb')
+const hbs = require('hbs')
+hbs.registerPartials(__dirname + '/views/partials');
+require('./views/hbs-helpers')
 
 /**
  * Import local libraries
  */
-const routeUsers = require('./routes/users')
 const routeFootball = require('./routes/football')
-const controller = require('connect-controller')
+const controller = require('./../index')
 
 /**
  * Instantiate...
@@ -33,6 +37,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use((req, res, next) => { req.favorites = favoritesDb; next(); })
 
 /**
  * Add controller
@@ -43,8 +48,7 @@ app.use(mws)
 /**
  * Add Routes
  */
-app.use('/users', routeUsers)
-app.use(routeFootball) // <=> Route on '/' with same features of /football controller  
+app.use('/router', routeFootball) // <=> Route on '/routes' with same features of /football controller  
 
 /**
  * Error-handling middlewares

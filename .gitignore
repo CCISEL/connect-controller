@@ -20,3 +20,6 @@ ssl
 
 # ignore lcov report
 coverage
+
+# ignore jsdoc
+out
