@@ -6,10 +6,11 @@
 [connect-controller](https://www.npmjs.com/package/connect-controller) allows you to
 create **Plain Controller Objects** with NO [express](https://www.npmjs.com/package/express)
 boilerplate code. 
-We call them _Plain_ because they do not require any additional configuration,
-nor annotations, nor a specific base class, nor `req`, `res` or `next` arguments, etc.
-[connect-controller](https://www.npmjs.com/package/connect-controller) suppresses
-all the express web server boilerplate code from a web controller, such as:
+We call them _Plain_ because they require NO additional configuration,
+NOR annotations, NOR a specific base class, NOR `req`, `res` or `next` arguments, etc.
+The [connect-controller](https://www.npmjs.com/package/connect-controller) suppresses
+all the [express](https://www.npmjs.com/package/express) web server boilerplate code
+from a web controller, such as:
 `router.get(...)`; paths specification e.g. `/path/subPath/:routeParam`;
 arguments lookup on `res.query`, `res.params`, etc;  rendering views
 `res.render(<viewPath>, <context>)`; specifying views paths; etc.
@@ -44,7 +45,7 @@ app.use('football', router)
 (see full [example/routes/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/routes/football.js))
 
 **Note** that the former example suppresses all boilerplate code:
-  1. NO need of `router.get`. By default every action binds to http GET. For different verbs 
+  1. NO need of `router.get`. Actions bind to http GET, by default. For different verbs 
   just prefix `<verb>_`to method's name.
   2. NO need of `req`, `res`, `next` arguments.
   3. NO arguments lookup, such as `req.params.id`. Just add `id` as a method parameter.
@@ -53,7 +54,7 @@ app.use('football', router)
   6. NO error handler.
 
 The [connect-controller](https://www.npmjs.com/package/connect-controller)
-builds a connect/express middleware handler from a plain controller object.
+builds a connect/express Middleware from a Plain Controller Object.
 By default, every controller method (_Action_) is mapped to a route with the path
 `/controllerName/actionName`, following the server-side controller conventions
 (according to the [Controller definition of Rails]( https://en.wikipedia.org/wiki/Ruby_on_Rails#Technical_overview))
