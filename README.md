@@ -47,6 +47,7 @@ app.use('football', router)
 **Note** that the former example suppresses all boilerplate code:
   1. NO need of `router.get`. Actions bind to http GET, by default. For different verbs 
   just prefix `<verb>_`to method's name.
+  2. NO path definition `/leagues/:id/table`. Route path maps to method's name.
   2. NO need of `req`, `res`, `next` arguments.
   3. NO arguments lookup, such as `req.params.id`. Just add `id` as a method parameter.
   4. NO explicit renderization. `res.render(...)` is implicit.
