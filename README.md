@@ -15,7 +15,7 @@ from a web controller, such as:
 arguments lookup on `res.query`, `res.params`, etc;  rendering views
 `res.render(<viewPath>, <context>)`; specifying views paths; etc.
 
-For instance, given a domain service [`footballDb`](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js)
+For instance, given a domain service [`footballDb`](https://github.com/CCISEL/connect-controller/blob/master/example/db/footballDb.js)
 with a promises based API, **compare** the two approaches of implementing a `football` route
 with a single endpoint to the path `/league/:id/table`.
 In the following, the former example uses the `connect-controller` and the latter the express `Router`.
@@ -91,8 +91,9 @@ following additional conventions, such as:
 
 ## Usage
 
-Given for example a controller `forums.js` located in application root `/controller`
-folder you may add all `forums.js` actions as routes of an express `app` just doing:
+Given for example a controller [`football.js`](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js)`
+located in application root `/controllers`
+folder you may add all `football.js` actions as routes of an express `app` just doing:
 
 ```js
 const express = require('express')
@@ -102,34 +103,63 @@ app.use(connectCtr()) // loads all controllers located in controllers folder
 /**
  * Alternatives:
  * app.use(connectCtr(path))                                  // loads from a different path
- * app.use(connectCtr(require('./controllers/forums.js')))    // loads a single controller object
+ * app.use(connectCtr(require('./controllers/football.js')))  // loads a single controller object
+ * app.use(connectCtr(                                        // loads a single controller object with name soccer
+ *   require('./controllers/football.js'),
+ *   { name: 'soccer'} 
+ * ))  
  */
 ```
 
-In this case `forums.js` could be for example:
+In this case `football.js` could be for example:
 
 ```js
-module.exports = {
-  'index': index,                      // bind to /forums
-  'index_id': index_id,                // bind to /forums/:id
-  'index_id_members': index_id_members // bind to /forums/:id/members
-}
+module.exports = (function(){
+    const footballDb = require('./../db/footballDb')
+    return {
+        'leagues_id_table': leagues_id_table, // binds to /leagues/:id/table
+        // <=> 'leagues_id_table': footballDb.leagueTable
+        'leagues': leagues,                   // binds to /leagues
+        'index': index                        // binds to /
+    }
 
-function index(name, date) { // bind to req.query.name and req.query.date
-  const ctx = {              
-    title: 'Forums list',
-    forums: listOfForums.filterBy(name, date)
-  }
-  return ctx  // <=> res.render(ctx, 'view /views/forums/index.__')
-}
+    /**
+     * Every action parameter (e.g. id) taking part of method's name (e.g. _id_)
+     * is bound to the corresponding argument of req.params (e.g. req.params.id).
+     * In this case this function is useless and we could simply bound 
+     * property 'leagues_id_table' to method footballDb.leagueTable.
+     */
+    function leagues_id_table(id){
+        return footballDb.leagueTable(id)
+    }
+    
+    /**
+     * Every action parameter (e.g. name) that is NOT part of the method's name
+     * is bound to the corresponding query-string argument (e.g. )
+     */
+    function leagues(name) {
+        if(name) name = name.toLowerCase()
+        return footballDb
+            .leagues()
+            .then(leagues => leagues
+                .filter(l => !name || l.caption.toLowerCase().includes(name))
+                .map(addLeaguePath))
+        
+        function addLeaguePath(league) {
+            league.leagueHref = "/football/leagues/" + league.id + "/table"
+            return league
+        }
+    }
 
-function index_id(id, res) { // bind to req.params.id
-  const forum = forumsDb[id] 
-  res.json({                 // Turns res.finished to true and suppress further responses
-    'title': 'Details',
-    'id': id 
-  })
-}
-
-function index_id_members(id) { ... }
+    /**
+     * Whenever an action receives the `res` parameter, the connect-controller
+     * gets out of the way and delegates on that action the responsibility of
+     * sending the response.
+     * So whenever you want to do something different from the default behavior 
+     * you just have to append res to your parameters.
+     */
+    function index(res) {
+        res.redirect('/football/leagues')
+    }
+})()
 ```
