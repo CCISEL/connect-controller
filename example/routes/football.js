@@ -1,42 +1,46 @@
 'use strict'
 
+const footballDb = require('./../db/footballDb')
+const express = require('express')
+
 module.exports = (function(){
-    const footballDb = require('./../db/footballDb')
-    const express = require('express')
-    const router = express.Router()
-    
-    router.get('/leagueTable/:id', (req, res, next) => {
+    const router = express.Router()    
+    router.get('/leagues/:id/table', leagues_id_table)
+    router.get('/leagues', leagues)
+    router.get('/', index)
+    return router
+
+    function leagues_id_table(req, res, next) {
         const id = req.params.id
         footballDb
             .leagueTable(id)
             .then(league => {
-                league.title = 'League Table'
-                res.render('football/leagueTable', league)
+                res.render('football/leagues/table', league)
             })
             .catch(err => next(err))
-    })
+    }
 
-    router.get('/leagues', (req, res, next) => {
+    function leagues(req, res, next) {
+        let name
+        if(req.query.name) name = req.query.name.toLowerCase()
         footballDb
             .leagues()
             .then(leagues => {
-                leagues = leaguesWithLinks(leagues)
-                res.render('football/leagues', {
-                    'title':'Leagues',
-                    'leagues': leagues
-                })
+                leagues = leagues
+                    .filter(l => !name || l.caption.toLowerCase().includes(name))
+                    .map(addLeaguePath)
+                res.render('football/leagues', leagues)
             })
             .catch(err => next(err))
-    })
-    return router
-    
-    /**
-     * Utility auxiliary function
-     */
-    function leaguesWithLinks(leagues) {
-        return leagues.map(item => {
-            item.leagueHref = "/leagueTable/" + item.id
-            return item 
-        })
+
+        function addLeaguePath(league) {
+            league.leagueHref = "/router/leagues/" + league.id + "/table"
+            return league
+        }
     }
+
+    function index(req, res, next) {
+        res.redirect('/router/leagues')
+    }
+
 })()

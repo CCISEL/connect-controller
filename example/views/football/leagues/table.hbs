@@ -1,19 +1,20 @@
+{{#extend "title"}}League Table{{/extend}}
+
 <div class="container">
-    <h1>Football Leagues</h1>
+    <h1>{{caption}}</h1>
 </div>
 <div class="container well">
     <div class="row">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Year</th><th>Caption</th>
+                    <th>Position</th><th>Team Name</th><th>Points</th>
                 </tr>
             </thead>
             <tbody>
-                {{#each leagues}}
+                {{#each teams}}
                 <tr>
-                    <td>{{year}}</td>
-                    <td><a href='{{leagueHref}}'>{{caption}}</a></td>
+                    <td>{{position}}</td><td>{{name}}</td><td>{{points}}</td>
                 </tr>
                 {{/each}}
             </tbody>

@@ -1,7 +1,7 @@
 {
   "name": "connect-controller",
   "version": "1.0.8",
-  "description": "Auto-bind plain controller objects to express Router (as MVC) and render views based on actions result (sync or async)",
+  "description": "connect/express Middleware builder for Plain Controller Objects",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/istanbul cover ./node_modules/nodeunit/bin/nodeunit --report lcovonly -- tests && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
@@ -21,6 +21,7 @@
   },
   "license": "GNU",
   "dependencies": {
+    "debug": "^2.5.2",
     "express": "^4.14.0"
   },
   "devDependencies": {

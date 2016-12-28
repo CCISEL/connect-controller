@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{title}}</title>
+    <title>{{{block 'title'}}}</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet"
        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -9,6 +9,13 @@
        crossorigin="anonymous"/>
   </head>
   <body>
-    {{{body}}}
+    <div class="row container">
+      <div class="col-xs-3">
+          {{> favorites }}
+      </div>
+      <div class="col-xs-9">
+        {{{body}}}
+      </div>
+    </div>
   </body>
 </html>
