@@ -16,7 +16,7 @@ arguments lookup on `res.query`, `res.params`, etc;  rendering views
 `res.render(<viewPath>, <context>)`; specifying views paths; etc.
 
 For instance, given a domain service [`footballDb`](https://github.com/CCISEL/connect-controller/blob/master/example/db/footballDb.js)
-with a promises based API, **compare** the two approaches of implementing a `football` route
+with a promises based API, **compare** the two approaches of building a `football` router
 with a single endpoint to the path `/league/:id/table`.
 In the following, the former example uses the `connect-controller` and the latter the express `Router`.
 
@@ -45,9 +45,9 @@ app.use('football', router)
 (see full [example/routes/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/routes/football.js))
 
 **Note** that the former example suppresses all boilerplate code:
-  1. NO need of `router.get`. Actions bind to http GET, by default. For different verbs 
+  1. NO need of `router.get`. Methods bind to http GET, by default. For different verbs 
   just prefix `<verb>_`to method's name.
-  2. NO path definition `/leagues/:id/table`. Route path maps to method's name.
+  2. NO path definition `/leagues/:id/table`. Router paths are mapped to methods names.
   2. NO need of `req`, `res`, `next` arguments.
   3. NO arguments lookup, such as `req.params.id`. Just add `id` as a method parameter.
   4. NO explicit renderization. `res.render(...)` is implicit.
@@ -91,7 +91,7 @@ following additional conventions, such as:
 
 ## Usage
 
-Given for example a controller [`football.js`](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js)`
+Given for example a controller [`football.js`](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js)
 located in application root `/controllers`
 folder you may add all `football.js` actions as routes of an express `app` just doing:
 
