@@ -3,11 +3,16 @@
 [![Build](https://travis-ci.org/CCISEL/connect-controller.svg?branch=master)](https://travis-ci.org/CCISEL/connect-controller)
 [![Coverage Status](https://coveralls.io/repos/github/CCISEL/connect-controller/badge.svg?branch=master)](https://coveralls.io/github/CCISEL/connect-controller?branch=master)
 
+[connect-controller](https://www.npmjs.com/package/connect-controller) allows you to
+create **Plain Controller Objects** with NO [express](https://www.npmjs.com/package/express)
+boilerplate code. 
+We call them _Plain_ because they do not require any additional configuration,
+nor annotations, nor a specific base class, nor `req`, `res` or `next` arguments, etc.
 [connect-controller](https://www.npmjs.com/package/connect-controller) suppresses
-all the express web server boilerplate code from a web controller, such as
-`router.get(...)`, paths specification e.g. `/path/subPath/:routeParam`,
-arguments lookup on `res.query`, `res.params`, etc,  rendering views
-`res.render(<viewPath>, <context>)`, specify view path, etc….
+all the express web server boilerplate code from a web controller, such as:
+`router.get(...)`; paths specification e.g. `/path/subPath/:routeParam`;
+arguments lookup on `res.query`, `res.params`, etc;  rendering views
+`res.render(<viewPath>, <context>)`; specifying views paths; etc.
 
 For instance, given a domain service [`footballDb`](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js)
 with a promises based API, **compare** the two approaches of implementing a `football` route
@@ -17,10 +22,7 @@ In the following, the former example uses the `connect-controller` and the latte
 ```js
 const connectCtr = require('connect-controller')
 const controller = {
-  leagues_id_table: (id) => footballDb.leagueTable(id)
-  /**
-   * <=> leagues_id_table: footballDb.leagueTable
-   */ 
+  leagues_id_table: (id) => footballDb.leagueTable(id) // <=> leagues_id_table: footballDb.leagueTable
 }
 app.use('football', connectCtr(controller))
 ```  
@@ -43,7 +45,7 @@ app.use('football', router)
 
 **Note** that the former example suppresses all boilerplate code:
   1. NO need of `router.get`. By default every action binds to http GET. For different verbs 
-  just append the prefix `<verb>_`to the name of the method.
+  just prefix `<verb>_`to method's name.
   2. NO need of `req`, `res`, `next` arguments.
   3. NO arguments lookup, such as `req.params.id`. Just add `id` as a method parameter.
   4. NO explicit renderization. `res.render(...)` is implicit.
