@@ -18,7 +18,7 @@ arguments lookup on `res.query`, `res.params`, etc;  rendering views
 
 For instance, given a domain service [`footballDb`](https://github.com/CCISEL/connect-controller/blob/master/example/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
-with a single endpoint to the path `/league/:id/table`.
+with a single endpoint to the path `/leagues/:id/table`.
 In the following, the former example uses the `connect-controller` and the latter the express `Router`.
 
 ```js
@@ -46,7 +46,7 @@ app.use('football', router)
 (see full [example/routes/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/routes/football.js))
 
 **Note** that the former example suppresses all boilerplate code:
-  1. NO need of `router.get`. Methods bind to http GET, by default. For different verbs 
+  1. NO need of `router.get(...)`. Methods bind to http GET, by default. For different verbs 
   just prefix `<verb>_`to method's name.
   2. NO path definition `/leagues/:id/table`. Router paths are mapped to methods names.
   2. NO need of `req`, `res`, `next` arguments.
@@ -63,12 +63,14 @@ By default, every controller method (_Action_) is mapped to a route with the pat
 
 The [connect-controller](https://www.npmjs.com/package/connect-controller) binds any
 plain controller object without requiring any dependencies of `http`, or `express`, or
-anything related with web application domain, like `req.query`,  or
-`res.render(viewPath, context)`, or something else. Put it simply, a _query-string_ or body parameter is just a method
-argument and `resp.render(viewPath, context)` is just a continuation appended to an action method,
+anything related with web application domain, like `req.body`,  or
+`res.render(viewPath, context)`, or something else. Put it simply, for each action method parameter,
+the connect-controller will search for a matching argument in `req`, `req.query`, `req.body`, 
+`res.locals` and `req.app.locals`.
+In turn, `resp.render(viewPath, context)` is just a continuation appended to an action method,
 where the `context` is just the method result, or the content of the returned `Promise`, and `viewPath` corresponds to 
 `/controllerName/actionName`, which is located inside the `views` folder by default.
-If you want to bind the action parameters to the route parameters (instead of the _query-string_) 
+If you want to bind the action parameters to _route parameters_  
 you just need to include the parameters names in the method's name interleaved by `_` (underscores).
 If your action method handles an HTTP method (i.e. verb) different from GET you just need to
 prefix the name of the method with `verb_`.
@@ -136,7 +138,7 @@ module.exports = (function(){
     
     /**
      * Every action parameter (e.g. name) that is NOT part of the method's name
-     * is bound to the corresponding query-string argument (e.g. )
+     * will be searched on req.query, req.body, req, res.locals and req.app.locals.
      */
     function leagues(name) {
         if(name) name = name.toLowerCase()
