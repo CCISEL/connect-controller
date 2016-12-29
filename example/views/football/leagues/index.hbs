@@ -10,10 +10,12 @@
         </thead>
         <tbody>
             {{#each this}}
-            <tr>
-                <td>{{year}}</td>
-                <td><a href='{{leagueHref}}'>{{caption}}</a></td>
-            </tr>
+                {{#if leagueHref}}
+                <tr>
+                    <td>{{year}}</td>
+                    <td><a href='{{leagueHref}}'>{{caption}}</a></td>
+                </tr>
+                {{/if}}    
             {{/each}}
         </tbody>
     </table>
