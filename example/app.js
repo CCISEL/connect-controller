@@ -12,7 +12,7 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 const favoritesDb = require('./db/favoritesDb')
 const hbs = require('hbs')
-hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerPartials(__dirname + '/views/favorites');
 require('./views/hbs-helpers')
 
 /**
@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use((req, res, next) => { 
-    res.locals.favorites = favoritesDb // Enhance it with per user favorites based on authentication
+    res.locals.favoritesList = favoritesDb // Enhance it with per user favorites based on authentication
     next()
 })
 
