@@ -3,10 +3,10 @@
 module.exports = (function(){
     const footballDb = require('./../db/footballDb')
     return {
-        'leagues_id_table': leagues_id_table, // binds to /leagues/:id/table
+        'leagues_id_table': leagues_id_table,          // binds to /leagues/:id/table
         // <=> 'leagues_id_table': footballDb.leagueTable
-        'leagues': leagues,                   // binds to /leagues
-        'index': index                        // binds to /
+        'leagues': leagues,                            // binds to /leagues
+        'index': index                                 // binds to /
     }
 
     /**
@@ -21,7 +21,7 @@ module.exports = (function(){
     
     /**
      * Every action parameter (e.g. name) that is NOT part of the method's name
-     * is bound to the corresponding query-string argument (e.g. )
+     * will be searched on req.query, req.body, req, res.locals and req.app.locals.
      */
     function leagues(name) {
         if(name) name = name.toLowerCase()

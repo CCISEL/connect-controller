@@ -10,18 +10,19 @@ module.exports = (function(){
      * Constants
      */
     const FOOTBALL_HOST = 'http://api.football-data.org'
-    const FOOTBALL_PATH = '/v1/soccerseasons/'
+    const FOOTBALL_PATH = '/v1/'
     const FOOTBALL_CREDENTIALS = loadCredentials(__dirname +  '/footballCredentials.js')
     /**
      * footballDb module API
      */
     return {
         'leagues': leagues,
-        'leagueTable': leagueTable
+        'leagueTable': leagueTable,
+        'getTeam': getTeam,
     }
 
     function leagues() {
-        const path = FOOTBALL_HOST + FOOTBALL_PATH
+        const path = FOOTBALL_HOST + FOOTBALL_PATH + '/soccerseasons'
         const options = { 'headers': FOOTBALL_CREDENTIALS }
         return fetch(path, options)
             .then(res => res.json())
@@ -32,7 +33,7 @@ module.exports = (function(){
     }
 
     function leagueTable(id) {
-        const path =  FOOTBALL_HOST + FOOTBALL_PATH + id + '/leagueTable'
+        const path =  FOOTBALL_HOST + FOOTBALL_PATH + '/soccerseasons/' + id + '/leagueTable'
         const options = { 'headers': FOOTBALL_CREDENTIALS }
         return fetch(path, options)
             .then(res => res.json())
@@ -41,6 +42,14 @@ module.exports = (function(){
                 if(!obj.standing) throw new Error("There is no Table for id = " + id)
                 return new LeagueTable(id, obj)
             })
+    }
+
+    function getTeam(teamId) {
+        const path = FOOTBALL_HOST + FOOTBALL_PATH + 'teams/' + teamId
+        const options = { 'headers': FOOTBALL_CREDENTIALS }
+        return fetch(path, options)
+            .then(res => res.json())
+            .then(data => new Team(data, teamId))
     }
 
     /**
@@ -64,14 +73,31 @@ module.exports = (function(){
     /**
      * Domain Entity -- Team 
      */
-    function Team(obj) {
-        const path = obj._links.team.href.split('/')
-        this.id = path[path.length - 1]
-        this.position = obj.position
-        this.name = obj.teamName
-        this.points = obj.points
-        this.goals = obj.goals
+    function Team(obj, teamId) {
+        return teamId
+            ? initTeam(this, teamId, obj)
+            : initTeamForTable(this, obj)
     }
+
+    function initTeam(self, teamId, obj) {
+        self.id = teamId
+        self.name = obj.name
+        self.code = obj.code
+        self.shortName = obj.shortName
+        self.squadMarketValue = obj.squadMarketValue 
+        self.crestUrl = obj.crestUrl
+    }
+
+    function initTeamForTable(self, obj) {
+        const path = obj._links.team.href.split('/')
+        self.id = path[path.length - 1]
+        self.position = obj.position
+        self.name = obj.teamName
+        self.points = obj.points
+        self.goals = obj.goals
+        self.players = []
+    }
+
 
     /**
      * Utility auxiliary function -- loadCredentials
