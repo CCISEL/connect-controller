@@ -10,7 +10,7 @@ boilerplate code.
 We call them _Plain_ because they require NO additional configuration,
 NOR annotations, NOR a specific base class, NOR `req`, `res` or `next` arguments, etc.
 The [connect-controller](https://www.npmjs.com/package/connect-controller) suppresses
-all the [express](https://www.npmjs.com/package/express) web server boilerplate code
+all the [express](https://www.npmjs.com/package/express) web server verbosity
 from a web controller, such as:
 `router.get(...)`; paths specification e.g. `/path/subPath/:routeParam`;
 arguments lookup on `res.query`, `res.params`, etc;  rendering views
@@ -45,7 +45,7 @@ app.use('football', router)
 ```
 (see full [example/routes/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/routes/football.js))
 
-**Note** that the former example suppresses all boilerplate code:
+**Note** that in former example, the `connect-controller` overwhelms all verbosity:
   1. NO need of `router.get(...)`. Methods bind to http GET, by default. For different verbs 
   just prefix `<verb>_`to method's name.
   2. NO path definition `/leagues/:id/table`. Router paths are mapped to methods names.
