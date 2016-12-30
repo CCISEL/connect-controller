@@ -15,7 +15,10 @@ function addTeam(path, favoritesList) {
     return fetch(path,  {
             method: 'PUT',
         })
-        .then(data => data.text())
+        .then(res => {
+            if(res.status == 200) return res.text()
+            else throw Error('Illegal operation adding team!!!')
+        })
         .then(data => {
             favoritesList.innerHTML += data
         })
