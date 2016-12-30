@@ -10,22 +10,22 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const fs = require('fs')
-const favoritesDb = require('./db/favoritesDb')
+const favoritesDb = require('./lib/db/favoritesDb')
 const hbs = require('hbs')
-hbs.registerPartials(__dirname + '/views/favorites');
-require('./views/hbs-helpers')
+hbs.registerPartials(__dirname + '/lib/views/favorites');
+require('./lib/views/hbs-helpers')
 
 /**
  * Import local libraries
  */
-const routeFootball = require('./routes/football')
+const routeFootball = require('./lib/routes/football')
 const controller = require('./../index')
 
 /**
  * Instantiate...
  */
 const app = express()
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'lib/views'))
 app.set('view engine', 'hbs')
 hbs.localsAsTemplateData(app);
 
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 /**
  * Add controller
  */
-const mws = controller()
+const mws = controller('./lib/controllers')
 app.use(mws)
 
 /**
