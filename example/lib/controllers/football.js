@@ -28,7 +28,7 @@ module.exports = (function(){
         return footballDb
             .leagues()
             .then(leagues => leagues
-                .filter(l => !name || l.caption.toLowerCase().includes(name))
+                .filter(l => !name || l.caption.toLowerCase().indexOf(name) >= 0)
                 .map(addLeaguePath))
         
         function addLeaguePath(league) {
