@@ -27,7 +27,7 @@ module.exports = (function(){
             .leagues()
             .then(leagues => {
                 leagues = leagues
-                    .filter(l => !name || l.caption.toLowerCase().includes(name))
+                    .filter(l => !name || l.caption.toLowerCase().indexOf(name) >= 0)
                     .map(addLeaguePath)
                 res.render('football/leagues', leagues)
             })
