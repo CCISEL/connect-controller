@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "bluebird": "^3.4.7",
+    "connect": "^3.5.0",
     "coveralls": "^2.11.15",
     "istanbul": "^0.4.5",
     "nodeunit": "^0.10.2",

@@ -1,10 +1,21 @@
 'use strict'
 
-module.exports = function(router){
+module.exports = function(controller){
+    const router = require('connect')()
+    router.locals = { 'appLocalVar': 'appLocalValue' }
+    router.use((req, res, next) => {
+        req.app = router
+        req.reqVar = 'reqValue'
+        res.locals = { 'resLocalVar': 'resLocalValue' }
+        next()
+    })
+    router.use(controller)
+    router.use((err, req, res, next) => {console.log(err)})
+
     return {
         testLoadControllers: function(test) {
             test.expect(1)
-            test.equal(router.stack.length, 8)    // 5 actions/handlers for userCtr object
+            test.equal(controller.stack.length, 8)    // 5 actions/handlers for userCtr object
             test.done() 
         },
 
@@ -17,17 +28,25 @@ module.exports = function(router){
         },
 
         testControllerIndexId : function(test) {
-            test.expect(1)
+            test.expect(4)
             const req = { 'url': '/users/27', 'method': 'get'}
-            const res = { 'render': (view, ctx) => test.equal(ctx, '27')}
+            const res = { 'render': (view, ctx) => { 
+                test.equal(ctx.teamId, '27')
+                test.equal(ctx.appLocalVar, 'appLocalValue')
+                test.equal(ctx.resLocalVar, 'resLocalValue')
+                test.equal(ctx.reqVar, 'reqValue')
+                test.done()
+            }}
             router(req, res)
-            test.done()
         },
 
         testControllerDummyNrMembers : function(test) {
-            test.expect(1)
+            test.expect(2)
             const req = { 'url': '/users/dummy/bastof/31/members', 'method': 'get'}
-            const res = { 'render': (view, ctx) => test.equal(ctx, '31')}
+            const res = { 'render': (view, ctx) => {
+                test.equal(view, 'users/dummy/bastof/members')
+                test.equal(ctx, '31')
+            }}
             router(req, res)
             test.done()
         },
@@ -62,14 +81,14 @@ module.exports = function(router){
             router(req, res)
         },
         testControllerActionWithReqAndNext: function(test) {
-            test.expect(1)
             const req = { 'url': '/users/xone/67', 'method': 'get'}
             const res = { 'render': (view, ctx) => {} }
-            const next = (ctx) => {
-                test.equal(ctx, '67')
-                test.done()
-            }
-            router(req, res, next)
+            controller.use((req, res, next) => {
+                test.expect(1);
+                test.ok(true, "this assertion should pass");
+                test.done();
+            })
+            router(req, res)
         },
         testControllerActionPost: function(test) {
             test.expect(1)
