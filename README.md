@@ -156,3 +156,11 @@ function index(res) {
     res.redirect('/football/leagues')
 }
 ```
+
+## Changelog
+
+### 1.2.0 (January 13, 2017)
+
+* Action methods (i.e. methods of a controller instance) can be defined in lowerCamelCase and not only with
+underscores. The `connect-controller` automatically bind action methods in one of those formats:
+ lowerCamelCase or underscores. 
