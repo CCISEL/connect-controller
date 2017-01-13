@@ -10,4 +10,4 @@ const controller = require('./../index')
  */
 const mws = controller('./tests/controllers') // Loads all modules from given path
 
-module.exports = require('./units/connectControllerLoadTest')(mws)
+module.exports = require('./units/connectControllerLoadTest')(mws, 16)
