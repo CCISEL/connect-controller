@@ -1,1 +1,1 @@
-module.exports =  require('./lib/connectController');
+module.exports =  require('./lib/connectController')

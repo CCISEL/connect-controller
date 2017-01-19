@@ -7,7 +7,7 @@
 [connect-controller](https://www.npmjs.com/package/connect-controller) allows you to
 create **Plain Controller Objects** with NO [express](https://www.npmjs.com/package/express)
 boilerplate code. 
-We call them _Plain_ because they do not require any additional configuration,
+**Plain Controller Objects** do not require any additional configuration,
 nor annotations, nor a specific base class, nor `req`, `res` or `next` arguments, etc.
 The [connect-controller](https://www.npmjs.com/package/connect-controller) suppresses
 all the [express](https://www.npmjs.com/package/express) web server verbosity
