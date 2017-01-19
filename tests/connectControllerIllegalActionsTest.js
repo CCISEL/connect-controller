@@ -5,7 +5,7 @@ const dummyCtr = {
          * because it requires the special res argument,
          * meaning that it takes responsability to send the response.
          */
-        return "Illegal stuff";
+        return 'Illegal stuff'
     }
 }
 
@@ -15,7 +15,7 @@ const router = controller(dummyCtr)
 module.exports.testLoadControllerWithIllegalAction = function(test) {
     test.expect(1)
     const req = { 'url': '/xone/27', 'method': 'get'}
-    const res = { 'render': (view, ctx) => { test.ok(false) }}
+    const res = { 'render': () => { test.ok(false) }}
     router.use((err, req, res, next) => { 
         test.ok(true) 
         test.done()
