@@ -3,7 +3,7 @@
 module.exports = function(PromiseCtor){
     const dummyCtr = {
         'xone_id': function(id) {
-            return new PromiseCtor((resolve, reject) => {
+            return new PromiseCtor((resolve) => {
                 resolve({
                     'msg': 'Some Stuff',
                     'myId': id
@@ -34,7 +34,7 @@ module.exports = function(PromiseCtor){
         testExceptionalAction : function(test) {
             test.expect(1)
             const req = { 'url': '/excep', 'method': 'get'}
-            const res = { 'render': (view, ctx) => { test.ok(false) }}
+            const res = { 'render': () => { test.ok(false) }}
             router.use((err, req, res, next) => { 
                 test.equal(err.message, 'Illegal action')
                 test.done()

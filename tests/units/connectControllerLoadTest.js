@@ -10,7 +10,7 @@ module.exports = function(controller, nrOfActions){
         next()
     })
     router.use(controller)
-    router.use((err, req, res, next) => {console.log(err)})
+    router.use((err, req, res, next) => { console.log(err) })
 
     return {
         testLoadControllers: function(test) {
@@ -105,14 +105,14 @@ module.exports = function(controller, nrOfActions){
         testControllerActionWithReqAndNext: function(test) {
             const req1 = { 'url': '/users/xone/67', 'method': 'get'}
             const req2 = { 'url': '/usersCamel/xone/67', 'method': 'get'}
-            const res = { 'render': (view, ctx) => {} }
-            test.expect(2);
-            controller.use((req, res, next) => {
-                test.ok(true, "this assertion should pass");
+            const res = { 'render': () => {} }
+            test.expect(2)
+            controller.use(() => {
+                test.ok(true, 'this assertion should pass')
             })
             router(req1, res)
             router(req2, res)
-            test.done();
+            test.done()
         },
         testControllerActionPost: function(test) {
             test.expect(2)

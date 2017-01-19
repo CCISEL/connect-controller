@@ -10,7 +10,7 @@ function PromiseCtor(action) {
         res => deferred.resolve(res),
         err => deferred.reject(err)
     )
-    return deferred.promise;
+    return deferred.promise
 }
 
 module.exports = asyncTest(PromiseCtor)
