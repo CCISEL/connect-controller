@@ -43,6 +43,6 @@ function leagues(name) {
  * So whenever you want to do something different from the default behavior 
  * you just have to append res to your parameters.
  */
-function index(res) {
-    res.redirect('/football/leagues')
+function index() {
+    return '/football/leagues'
 }

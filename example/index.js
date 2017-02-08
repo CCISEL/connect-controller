@@ -6,13 +6,11 @@
 const express = require('express')
 const path = require('path')
 const favicon = require('serve-favicon')
-const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const fs = require('fs')
 const favoritesDb = require('./lib/db/favoritesDb')
 const hbs = require('hbs')
-hbs.registerPartials(__dirname + '/lib/views/favorites');
+hbs.registerPartials(__dirname + '/lib/views/favorites')
 require('./lib/views/hbs-helpers')
 
 /**
@@ -27,7 +25,7 @@ const controller = require('./../index')
 const app = express()
 app.set('views', path.join(__dirname, 'lib/views'))
 app.set('view engine', 'hbs')
-hbs.localsAsTemplateData(app);
+hbs.localsAsTemplateData(app)
 
 /**
  * Add Middlewares
@@ -46,7 +44,7 @@ app.use((req, res, next) => {
 /**
  * Add controller
  */
-const mws = controller('./lib/controllers')
+const mws = controller('./lib/controllers', {redirectOnStringResult: true})
 app.use(mws)
 
 /**
@@ -59,9 +57,9 @@ app.use('/router', routeFootball) // <=> Route on '/routes' with same features o
  */
 // catch 404 and forward to default error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found')
-  err.status = 404
-  next(err)
+    const err = new Error('Not Found')
+    err.status = 404
+    next(err)
 })
 
 // print stacktrace
