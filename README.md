@@ -86,7 +86,13 @@ following additional conventions, such as:
    * `index` reserved method name, which maps to a route corresponding to the Controller's
    name
 
-   
+Finally you may configure the `connect-controller` behavior with additional parameters 
+passed in an optional object to the default function (e.g. `controller('./controllers', { redirectOnStringResult: true })`).
+This options `Object` can be parameterized with the following properties:
+   * `name` - the name of controller when it is loaded as a single controller instance.
+   * `redirectOnStringResult` - set this property to `true` when an action method returns a string as the path to redirect.
+   * `resultHandler` - `(res, ctx) => void` function that will handle the result of the action methods, instead of the default `res.render(...)` behavior.
+  
 ## Installation
 
     $ npm install connnect-controller
@@ -158,6 +164,14 @@ function index(res) {
 ```
 
 ## Changelog
+
+### 1.3.0 (January 13, 2017)
+
+* `connectCtr` function may me configured with an additional options `Object` 
+with the following optional properties:
+   * `name` - the name of controller when it is loading a single controller instance.
+   * `redirectOnStringResult` - set this property to `true` when an action method returns a string as the path to redirect.
+   * `resultHandler` - `(res, ctx) => void` function that will handle the result of the action methods, instead of the default `res.render(...)` behavior.
 
 ### 1.2.0 (January 13, 2017)
 
