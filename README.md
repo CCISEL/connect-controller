@@ -16,19 +16,20 @@ from a web controller, such as:
 arguments lookup on `res.query`, `res.params`, etc;  rendering views
 `res.render(<viewPath>, <context>)`; specifying views paths; etc.
 
-For instance, given a domain service [`footballDb`](example/db/footballDb.js)
+For instance, given a domain service [`footballDb`](example/lib/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
-with a single endpoint to the path `/leagues/:id/table`.
+with a single endpoint to the path `/leagues/:id/table` which uses the
+[`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 In the following, the former example uses the `connect-controller` and the latter the express `Router`.
 
 ```js
 const connectCtr = require('connect-controller')
 const controller = {
-  leagues_id_table: (id) => footballDb.leagueTable(id) // <=> leagues_id_table: footballDb.leagueTable
+  leagues_id_table: footballDb.leagueTable
 }
 app.use('football', connectCtr(controller))
 ```  
-(see full [example/controllers/football.js](example/controllers/football.js))
+(see full [example/lib/controllers/football.js](example/lib/controllers/football.js))
 
 ```js
 const router = express.Router()
@@ -43,7 +44,7 @@ router.get('/leagues/:id/table', (req, res, next) => {
 })
 app.use('football', router)
 ```
-(see full [example/routes/football.js](example/routes/football.js))
+(see full [example/lib/routes/football.js](example/lib/routes/football.js))
 
 **Note** that in former example, the `connect-controller` overwhelms all verbosity:
   1. NO need of `router.get(...)`. Methods bind to http GET, by default. For different verbs 
@@ -99,7 +100,7 @@ This `Object` can be parameterized with the following properties:
 
 ## Usage
 
-Given for example a controller [`football.js`](example/controllers/football.js)
+Given for example a controller [`football.js`](example/lib/controllers/football.js)
 located in application root `/controllers`
 folder you may add all `football.js` actions as routes of an express `app` just doing:
 
