@@ -22,6 +22,7 @@ with a single endpoint to the path `/leagues/:id/table` which uses the
 [`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 In the following, the former example uses the `connect-controller` and the latter the express `Router`.
 
+_Build and bind an `express` route with `connect-controller` ([example/lib/controllers/football.js](example/lib/controllers/football.js))_
 ```js
 const connectCtr = require('connect-controller')
 const controller = {
@@ -29,8 +30,8 @@ const controller = {
 }
 app.use('football', connectCtr(controller))
 ```  
-(see full [example/lib/controllers/football.js](example/lib/controllers/football.js))
 
+_Build and bind an `express` route` ([example/lib/routes/football.js](example/lib/routes/football.js))_
 ```js
 const router = express.Router()
 router.get('/leagues/:id/table', (req, res, next) => {
@@ -44,7 +45,6 @@ router.get('/leagues/:id/table', (req, res, next) => {
 })
 app.use('football', router)
 ```
-(see full [example/lib/routes/football.js](example/lib/routes/football.js))
 
 **Note** that in former example, the `connect-controller` overwhelms all verbosity:
   1. NO need of `router.get(...)`. Methods bind to http GET, by default. For different verbs 
