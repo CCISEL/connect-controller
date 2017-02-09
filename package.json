@@ -1,6 +1,6 @@
 {
   "name": "connect-controller",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "connect/express Middleware builder for Plain Controller Objects",
   "main": "index.js",
   "scripts": {
