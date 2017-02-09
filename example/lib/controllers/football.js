@@ -5,7 +5,8 @@ const footballDb = require('./../db/footballDb')
 module.exports = {
     leagues_id_table, // binds to /leagues/:id/table
     leagues,          // binds to /leagues
-    index             // binds to /
+    index,            // binds to /
+    index_id          // binds to /:id
 }
 
 /**
@@ -31,7 +32,7 @@ function leagues(name) {
             .map(addLeaguePath))
     
     function addLeaguePath(league) {
-        league.leagueHref = "/football/leagues/" + league.id + "/table"
+        league.leagueHref = '/football/leagues/' + league.id + '/table'
         return league
     }
 }
@@ -41,8 +42,23 @@ function leagues(name) {
  * gets out of the way and delegates on that action the responsibility of
  * sending the response.
  * So whenever you want to do something different from the default behavior 
- * you just have to append res to your parameters.
+ * you just have to append `res` to your parameters.
  */
-function index() {
-    return '/football/leagues'
+function index(res) {
+    /**
+     * If this controller is loaded with an options object set with
+     * the property `redirectOnStringResult` then this is equivalent
+     * to removing the `res` parameter and just return the destination
+     * string path '/football/leagues'.
+     */
+    res.redirect('/football/leagues')
+}
+
+/**
+ * If this controller is loaded with an options object set with the property 
+ * `redirectOnStringResult` then this action method redirects to 
+ * `/football/leagues/:id/table`.
+ */
+function index_id(id) {
+    return '/football/leagues/' + id + '/table'
 }
