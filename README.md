@@ -35,7 +35,7 @@ app.use('football', connectCtr(controller))
 ```  
 
 <a name="list-without-connect-ctr">
-    <em>Listing 2 - Build and bind an `express` route` ([example/lib/routes/football.js](example/lib/routes/football.js)):</em>
+    <em>Listing 2 - Build and bind an `express` route ([example/lib/routes/football.js](example/lib/routes/football.js)):</em>
 </a>
 ```js
 const router = express.Router()
