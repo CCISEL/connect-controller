@@ -89,8 +89,8 @@ following additional conventions, such as:
 Finally you may configure the `connect-controller` behavior with additional parameters 
 passed in an optional `Object` to the default function (e.g. `connectCtr('./controllers', { redirectOnStringResult: true })`).
 This `Object` can be parameterized with the following properties:
-   * `name` - the name of controller when it is loaded as a single controller instance.
-   * `redirectOnStringResult` - set this property to `true` when an action method returns a string as the path to redirect.
+   * `name` - the name of controller when it is loaded as a single controller instance (default: `''`).
+   * `redirectOnStringResult` - set this property to `true` when an action method returns a string as the path to redirect (default: `false`).
    * `resultHandler` - `(res, ctx) => void` function that will handle the result of the action methods, instead of the default `res.render(...)` behavior.
   
 ## Installation
@@ -99,7 +99,7 @@ This `Object` can be parameterized with the following properties:
 
 ## Usage
 
-Given for example a controller [`football.js`](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js)
+Given for example a controller [`football.js`](example/controllers/football.js)
 located in application root `/controllers`
 folder you may add all `football.js` actions as routes of an express `app` just doing:
 
