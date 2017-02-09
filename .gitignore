@@ -8,6 +8,7 @@ typings
 
 # we don't want to accidentally check our secret credentials into the repo
 credentials.js
+.coveralls.yml
 
 # don't commit log files
 log
