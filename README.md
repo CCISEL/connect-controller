@@ -23,7 +23,10 @@ Both cases build and bind a single endpoint to the path `/leagues/:id/table` whi
 [`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 
 <a name="list-with-connect-ctr">
-    <em>Listing 1 - Build and bind an `express` route with `connect-controller` ([example/lib/controllers/football.js](example/lib/controllers/football.js)):</em>
+    <em>
+        Listing 1 - Build and bind an express route with connect-controller
+        (<a href="example/lib/controllers/football.js">example/lib/controllers/football.js</a>):
+    </em>
 </a>
 
 ```js
@@ -35,7 +38,10 @@ app.use('football', connectCtr(controller))
 ```  
 
 <a name="list-without-connect-ctr">
-    <em>Listing 2 - Build and bind an `express` route ([example/lib/routes/football.js](example/lib/routes/football.js)):</em>
+    <em>
+        Listing 2 - Build and bind an express route
+        (<a href="example/lib/routes/football.js">example/lib/routes/football.js</a>):
+    </em>
 </a>
 
 ```js
