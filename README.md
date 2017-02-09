@@ -18,11 +18,15 @@ arguments lookup on `res.query`, `res.params`, etc;  rendering views
 
 For instance, given a domain service [`footballDb`](example/lib/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
-with a single endpoint to the path `/leagues/:id/table` which uses the
+in listings [1](#list-with-connect-ctr) and [2](list-without-connect-ctr), with and without using `connect-controller`.
+Both cases build and bind a single endpoint to the path `/leagues/:id/table` which uses the
 [`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 In the following, the former example uses the `connect-controller` and the latter the express `Router`.
 
-_Build and bind an `express` route with `connect-controller` ([example/lib/controllers/football.js](example/lib/controllers/football.js))_
+<a name="list-with-connect-ctr">
+    <em>Listing 1 - Build and bind an `express` route with `connect-controller` ([example/lib/controllers/football.js](example/lib/controllers/football.js)):</em>
+</a>
+
 ```js
 const connectCtr = require('connect-controller')
 const controller = {
@@ -31,7 +35,9 @@ const controller = {
 app.use('football', connectCtr(controller))
 ```  
 
-_Build and bind an `express` route` ([example/lib/routes/football.js](example/lib/routes/football.js))_
+<a name="list-without-connect-ctr">
+    <em>Build and bind an `express` route` ([example/lib/routes/football.js](example/lib/routes/football.js)):</em>
+</a>
 ```js
 const router = express.Router()
 router.get('/leagues/:id/table', (req, res, next) => {
