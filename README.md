@@ -16,7 +16,7 @@ from a web controller, such as:
 arguments lookup on `res.query`, `res.params`, etc;  rendering views
 `res.render(<viewPath>, <context>)`; specifying views paths; etc.
 
-For instance, given a domain service [`footballDb`](https://github.com/CCISEL/connect-controller/blob/master/example/db/footballDb.js)
+For instance, given a domain service [`footballDb`](example/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
 with a single endpoint to the path `/leagues/:id/table`.
 In the following, the former example uses the `connect-controller` and the latter the express `Router`.
@@ -28,7 +28,7 @@ const controller = {
 }
 app.use('football', connectCtr(controller))
 ```  
-(see full [example/controllers/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/controllers/football.js))
+(see full [example/controllers/football.js](example/controllers/football.js))
 
 ```js
 const router = express.Router()
@@ -43,7 +43,7 @@ router.get('/leagues/:id/table', (req, res, next) => {
 })
 app.use('football', router)
 ```
-(see full [example/routes/football.js](https://github.com/CCISEL/connect-controller/blob/master/example/routes/football.js))
+(see full [example/routes/football.js](example/routes/football.js))
 
 **Note** that in former example, the `connect-controller` overwhelms all verbosity:
   1. NO need of `router.get(...)`. Methods bind to http GET, by default. For different verbs 
