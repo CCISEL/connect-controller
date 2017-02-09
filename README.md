@@ -87,8 +87,8 @@ following additional conventions, such as:
    name
 
 Finally you may configure the `connect-controller` behavior with additional parameters 
-passed in an optional object to the default function (e.g. `controller('./controllers', { redirectOnStringResult: true })`).
-This options `Object` can be parameterized with the following properties:
+passed in an optional `Object` to the default function (e.g. `connectCtr('./controllers', { redirectOnStringResult: true })`).
+This `Object` can be parameterized with the following properties:
    * `name` - the name of controller when it is loaded as a single controller instance.
    * `redirectOnStringResult` - set this property to `true` when an action method returns a string as the path to redirect.
    * `resultHandler` - `(res, ctx) => void` function that will handle the result of the action methods, instead of the default `res.render(...)` behavior.
@@ -107,10 +107,13 @@ folder you may add all `football.js` actions as routes of an express `app` just 
 const express = require('express')
 const connectCtr = require('connect-controller')
 const app = express()
-app.use(connectCtr()) // loads all controllers located in controllers folder
+app.use(connectCtr(
+    './controllers',
+    { redirectOnStringResult: true }
+))
 /**
  * Alternatives:
- * app.use(connectCtr(path))                                  // loads from a different path
+ * app.use(connectCtr())                                      // loads all controllers located in controllers folder
  * app.use(connectCtr(require('./controllers/football.js')))  // loads a single controller object
  * app.use(connectCtr(                                        // loads a single controller object with name soccer
  *   require('./controllers/football.js'),
@@ -127,7 +130,8 @@ const footballDb = require('./../db/footballDb')
 module.exports = {
     leagues_id_table, // binds to /leagues/:id/table
     leagues,          // binds to /leagues
-    index             // binds to /
+    index,            // binds to /
+    index_id          // binds to /:id
 }
 
 /**
@@ -159,13 +163,29 @@ function leagues(name) {
  * you just have to append res to your parameters.
  */
 function index(res) {
+    /**
+     * Once this controller is loaded with an options object set with
+     * the property `redirectOnStringResult` then this is equivalent
+     * to removing the `res` parameter and just return the destination
+     * string path '/football/leagues'.
+     */
     res.redirect('/football/leagues')
 }
+
+/**
+ * If this controller is loaded with an options object set with the property 
+ * `redirectOnStringResult` then this action method redirects to 
+ * `/football/leagues/:id/table`.
+ */
+function index_id(id) {
+    return '/football/leagues/' + id + '/table'
+}
+
 ```
 
 ## Changelog
 
-### 1.3.0 (January 13, 2017)
+### 1.3.0 (February 8, 2017)
 
 * `connectCtr` function may me configured with an additional options `Object` 
 with the following optional properties:
