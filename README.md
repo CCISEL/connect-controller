@@ -18,14 +18,17 @@ arguments lookup on `res.query`, `res.params`, etc;  rendering views
 
 For instance, given a domain service [`footballDb`](example/lib/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
-in listings [1](#list-with-connect-ctr) and [2](#list-without-connect-ctr), with and without using `connect-controller`.
+with and without using `connect-controller`
+between [listing 1](#list-with-connect-ctr) and [listing 2](#list-without-connect-ctr)
 Both cases build and bind a single endpoint to the path `/leagues/:id/table` which uses the
 [`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 
 <a name="list-with-connect-ctr">
     <em>
         Listing 1 - Build and bind an express route with connect-controller
-        (<a href="example/lib/controllers/football.js">example/lib/controllers/football.js</a>):
+        (<a href="https://github.com/CCISEL/connect-controller/blob/master/example/lib/controllers/football.js">
+            example/lib/controllers/football.js
+        </a>):
     </em>
 </a>
 
@@ -40,7 +43,9 @@ app.use('football', connectCtr(controller))
 <a name="list-without-connect-ctr">
     <em>
         Listing 2 - Build and bind an express route
-        (<a href="example/lib/routes/football.js">example/lib/routes/football.js</a>):
+        (<a href="https://github.com/CCISEL/connect-controller/blob/master/example/lib/routes/football.js">
+            example/lib/routes/football.js
+        </a>):
     </em>
 </a>
 
