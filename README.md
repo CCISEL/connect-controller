@@ -18,8 +18,8 @@ arguments lookup on `res.query`, `res.params`, etc;  rendering views
 
 For instance, given a domain service [`footballDb`](example/lib/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
-with and without using `connect-controller`
-between [listing 1](#list-with-connect-ctr) and [listing 2](#list-without-connect-ctr)
+with, and without `connect-controller`,
+in [listing 1](#list-with-connect-ctr) and [listing 2](#list-without-connect-ctr) respectively.
 Both cases build and bind a single endpoint to the path `/leagues/:id/table` which uses the
 [`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 
