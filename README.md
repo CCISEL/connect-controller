@@ -18,29 +18,33 @@ arguments lookup on `res.query`, `res.params`, etc;  rendering views
 
 For instance, given a domain service [`footballDb`](example/lib/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
-in listings [1](#list-with-connect-ctr) and [2](#list-without-connect-ctr), with and without using `connect-controller`.
+with, and without `connect-controller`,
+in [listing 1](#list-with-connect-ctr) and [listing 2](#list-without-connect-ctr) respectively.
 Both cases build and bind a single endpoint to the path `/leagues/:id/table` which uses the
-[`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
+[`getLeaguesIdTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 
 <a name="list-with-connect-ctr">
     <em>
         Listing 1 - Build and bind an express route with connect-controller
-        (<a href="example/lib/controllers/football.js">example/lib/controllers/football.js</a>):
+        (<a href="https://github.com/CCISEL/connect-controller/blob/master/example/lib/controllers/football.js">
+            example/lib/controllers/football.js
+        </a>):
     </em>
 </a>
 
 ```js
 const connectCtr = require('connect-controller')
-const controller = {
-  leagues_id_table: footballDb.leagueTable
-}
+const getLeaguesIdTable = footballDb.getLeaguesIdTable
+const controller = { getLeaguesIdTable }
 app.use('football', connectCtr(controller))
 ```  
 
 <a name="list-without-connect-ctr">
     <em>
         Listing 2 - Build and bind an express route
-        (<a href="example/lib/routes/football.js">example/lib/routes/football.js</a>):
+        (<a href="https://github.com/CCISEL/connect-controller/blob/master/example/lib/routes/football.js">
+            example/lib/routes/football.js
+        </a>):
     </em>
 </a>
 
@@ -49,7 +53,7 @@ const router = express.Router()
 router.get('/leagues/:id/table', (req, res, next) => {
     const id = req.params.id
     footballDb
-      .leagueTable(id)
+      .getLeaguesIdTable(id)
       .then(league => {
         res.render('football/leagues/table', league)
       })
@@ -79,7 +83,7 @@ Put it simply, for each action method:
 * the `connect-controller` searches for a matching argument in `req`, `req.query`, `req.body`, 
 `res.locals` and `req.app.locals`;
 * to bind action parameters to _route parameters_ you just need to include
-the parameters names in the method's name interleaved by `_` (underscores);
+the parameters names in the method's name interleaved by `_` or different case;
 * if you want to handle an HTTP method (i.e. verb) different from GET you just need to
 prefix the name of the method with `verb_`;
 * the `resp.render(viewPath, context)` is just a continuation appended to an action method,
@@ -140,11 +144,17 @@ In this case `football.js` could be for example:
 ```js
 const footballDb = require('./../db/footballDb')
 
+/**
+ * connect-controller supports action methods names in both conventions
+ * underscores and lower camel case.
+ * In this sample we are using underscores, but it will work too if you replace
+ * underscores by different case.
+ */
 module.exports = {
-    leagues_id_table, // binds to /leagues/:id/table
-    leagues,          // binds to /leagues
-    index,            // binds to /
-    index_id          // binds to /:id
+    leagues_id_table, // binds to /football/leagues/:id/table
+    leagues,          // binds to /football/leagues
+    index,            // binds to /football/
+    index_id          // binds to /football/:id
 }
 
 /**
@@ -154,7 +164,7 @@ module.exports = {
  * property 'leagues_id_table' to method footballDb.leagueTable.
  */
 function leagues_id_table(id){
-    return footballDb.leagueTable(id)
+    return footballDb.getLeaguesIdTable(id)
 }
 
 /**
@@ -163,7 +173,7 @@ function leagues_id_table(id){
  */
 function leagues(name) {
     return footballDb
-        .leagues()
+        .getLeagues()
         .then(leagues => leagues
             .filter(l => !name || l.caption.indexOf(name) >= 0)
 }
