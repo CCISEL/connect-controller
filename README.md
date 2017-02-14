@@ -34,7 +34,8 @@ Both cases build and bind a single endpoint to the path `/leagues/:id/table` whi
 
 ```js
 const connectCtr = require('connect-controller')
-const controller = {getLeaguesIdTable}
+const getLeaguesIdTable = footballDb.getLeaguesIdTable
+const controller = { getLeaguesIdTable }
 app.use('football', connectCtr(controller))
 ```  
 
@@ -52,7 +53,7 @@ const router = express.Router()
 router.get('/leagues/:id/table', (req, res, next) => {
     const id = req.params.id
     footballDb
-      .leagueTable(id)
+      .getLeaguesIdTable(id)
       .then(league => {
         res.render('football/leagues/table', league)
       })
@@ -82,7 +83,7 @@ Put it simply, for each action method:
 * the `connect-controller` searches for a matching argument in `req`, `req.query`, `req.body`, 
 `res.locals` and `req.app.locals`;
 * to bind action parameters to _route parameters_ you just need to include
-the parameters names in the method's name interleaved by `_` (underscores);
+the parameters names in the method's name interleaved by `_` or different case;
 * if you want to handle an HTTP method (i.e. verb) different from GET you just need to
 prefix the name of the method with `verb_`;
 * the `resp.render(viewPath, context)` is just a continuation appended to an action method,
@@ -143,6 +144,12 @@ In this case `football.js` could be for example:
 ```js
 const footballDb = require('./../db/footballDb')
 
+/**
+ * connect-controller supports action methods names in both conventions
+ * underscores and lower camel case.
+ * In this sample we are using underscores, but it will work too if you replace
+ * underscores by different case.
+ */
 module.exports = {
     leagues_id_table, // binds to /football/leagues/:id/table
     leagues,          // binds to /football/leagues
@@ -157,7 +164,7 @@ module.exports = {
  * property 'leagues_id_table' to method footballDb.leagueTable.
  */
 function leagues_id_table(id){
-    return footballDb.leagueTable(id)
+    return footballDb.getLeaguesIdTable(id)
 }
 
 /**
@@ -166,7 +173,7 @@ function leagues_id_table(id){
  */
 function leagues(name) {
     return footballDb
-        .leagues()
+        .getLeagues()
         .then(leagues => leagues
             .filter(l => !name || l.caption.indexOf(name) >= 0)
 }
