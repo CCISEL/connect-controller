@@ -13,10 +13,10 @@ module.exports = {
  * Every action parameter (e.g. id) taking part of method's name (e.g. _id_)
  * is bound to the corresponding argument of req.params (e.g. req.params.id).
  * In this case this function is useless and we could simply bound 
- * property 'leagues_id_table' to method footballDb.leagueTable.
+ * property 'getLeaguesIdTable' to method `footballDb.getLeaguesIdTable`.
  */
 function getLeaguesIdTable(id){
-    return footballDb.leagueTable(id)
+    return footballDb.getLeaguesIdTable(id)
 }
 
 /**
@@ -26,7 +26,7 @@ function getLeaguesIdTable(id){
 function getLeagues(name) {
     if(name) name = name.toLowerCase()
     return footballDb
-        .leagues()
+        .getLeagues()
         .then(leagues => leagues
             .filter(l => !name || l.caption.toLowerCase().indexOf(name) >= 0)
             .map(addLeaguePath))
