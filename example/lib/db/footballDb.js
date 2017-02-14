@@ -16,12 +16,12 @@ module.exports = (function(){
      * footballDb module API
      */
     return {
-        'leagues': leagues,
-        'leagueTable': leagueTable,
-        'getTeam': getTeam,
+        getLeagues,
+        getLeaguesIdTable,
+        getTeam,
     }
 
-    function leagues() {
+    function getLeagues() {
         const path = FOOTBALL_HOST + FOOTBALL_PATH + '/soccerseasons'
         const options = { 'headers': FOOTBALL_CREDENTIALS }
         return fetch(path, options)
@@ -32,7 +32,7 @@ module.exports = (function(){
             })
     }
 
-    function leagueTable(id) {
+    function getLeaguesIdTable(id) {
         const path =  FOOTBALL_HOST + FOOTBALL_PATH + '/soccerseasons/' + id + '/leagueTable'
         const options = { 'headers': FOOTBALL_CREDENTIALS }
         return fetch(path, options)

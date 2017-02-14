@@ -3,30 +3,30 @@
 const footballDb = require('./../db/footballDb')
 
 module.exports = {
-    leagues_id_table, // binds to /leagues/:id/table
-    leagues,          // binds to /leagues
-    index,            // binds to /
-    index_id          // binds to /:id
+    getLeaguesIdTable, // binds to /football/leagues/:id/table
+    getLeagues,        // binds to /football/leagues
+    index,             // binds to /football/
+    indexId            // binds to /football/:id
 }
 
 /**
  * Every action parameter (e.g. id) taking part of method's name (e.g. _id_)
  * is bound to the corresponding argument of req.params (e.g. req.params.id).
  * In this case this function is useless and we could simply bound 
- * property 'leagues_id_table' to method footballDb.leagueTable.
+ * property 'getLeaguesIdTable' to method `footballDb.getLeaguesIdTable`.
  */
-function leagues_id_table(id){
-    return footballDb.leagueTable(id)
+function getLeaguesIdTable(id){
+    return footballDb.getLeaguesIdTable(id)
 }
 
 /**
  * Every action parameter (e.g. name) that is NOT part of the method's name
  * will be searched on req.query, req.body, req, res.locals and req.app.locals.
  */
-function leagues(name) {
+function getLeagues(name) {
     if(name) name = name.toLowerCase()
     return footballDb
-        .leagues()
+        .getLeagues()
         .then(leagues => leagues
             .filter(l => !name || l.caption.toLowerCase().indexOf(name) >= 0)
             .map(addLeaguePath))
@@ -59,6 +59,6 @@ function index(res) {
  * `redirectOnStringResult` then this action method redirects to 
  * `/football/leagues/:id/table`.
  */
-function index_id(id) {
+function indexId(id) {
     return '/football/leagues/' + id + '/table'
 }
