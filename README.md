@@ -21,7 +21,7 @@ with a promises based API, **compare** the two approaches of building a `footbal
 with, and without `connect-controller`,
 in [listing 1](#list-with-connect-ctr) and [listing 2](#list-without-connect-ctr) respectively.
 Both cases build and bind a single endpoint to the path `/leagues/:id/table` which uses the
-[`leagueTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
+[`getLeaguesIdTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 
 <a name="list-with-connect-ctr">
     <em>
@@ -34,9 +34,7 @@ Both cases build and bind a single endpoint to the path `/leagues/:id/table` whi
 
 ```js
 const connectCtr = require('connect-controller')
-const controller = {
-  leagues_id_table: footballDb.leagueTable
-}
+const controller = {getLeaguesIdTable}
 app.use('football', connectCtr(controller))
 ```  
 
@@ -146,10 +144,10 @@ In this case `football.js` could be for example:
 const footballDb = require('./../db/footballDb')
 
 module.exports = {
-    leagues_id_table, // binds to /leagues/:id/table
-    leagues,          // binds to /leagues
-    index,            // binds to /
-    index_id          // binds to /:id
+    leagues_id_table, // binds to /football/leagues/:id/table
+    leagues,          // binds to /football/leagues
+    index,            // binds to /football/
+    index_id          // binds to /football/:id
 }
 
 /**
