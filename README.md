@@ -118,15 +118,24 @@ This `Object` can be parameterized with the following properties:
 
 Given for example a controller [`football.js`](example/lib/controllers/football.js)
 located in application root `/controllers`
-folder you may add all `football.js` actions as routes of an express `app` just doing:
+folder you may add all `football.js` actions as routes of an express `app` just taking
+the following steps.
+In this example we are adding two routers: one to render views (the default behavior of `connect-controller`) and another to serialize the context objects to json.
+The latter routes with prefix `/api`.
+Note that we are using exactly the same controller module to build both router objects.
+The only difference is in the options object which includes a `resultHandler` for the latter.
 
 ```js
 const express = require('express')
 const connectCtr = require('connect-controller')
 const app = express()
 app.use(connectCtr(
-    './controllers',
-    { redirectOnStringResult: true }
+  './controllers',
+  { redirectOnStringResult: true }
+))
+app.use('/api', connectCtr(
+  './controllers',
+  { resultHandler: (res, ctx) => res.json(ctx) }
 ))
 /**
  * Alternatives:
