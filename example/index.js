@@ -44,13 +44,15 @@ app.use((req, res, next) => {
 /**
  * Add controller
  */
-const mws = controller('./lib/controllers', {redirectOnStringResult: true})
-app.use(mws)
+const football = controller('./lib/controllers', {redirectOnStringResult: true})
+const footballApi = controller('./lib/controllers', {resultHandler: (res, ctx) => res.json(ctx)})
+app.use(football)
+app.use('/api', footballApi)
 
 /**
  * Add Routes
  */
-app.use('/router', routeFootball) // <=> Route on '/routes' with same features of /football controller  
+app.use('/router', routeFootball) // <=> Route on '/routes' with same features of /football controller
 
 /**
  * Error-handling middlewares
