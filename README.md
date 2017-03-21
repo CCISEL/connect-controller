@@ -230,3 +230,8 @@ with the following optional properties:
 * Action methods (i.e. methods of a controller instance) can be defined in lowerCamelCase and not only with
 underscores. The `connect-controller` automatically bind action methods in one of those formats:
  lowerCamelCase or underscores. 
+
+
+ ## License
+
+[MIT](https://github.com/CCISEL/connect-controller/blob/master/LICENSE)
