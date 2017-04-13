@@ -232,6 +232,6 @@ underscores. The `connect-controller` automatically bind action methods in one o
  lowerCamelCase or underscores. 
 
 
- ## License
+## License
 
 [MIT](https://github.com/CCISEL/connect-controller/blob/master/LICENSE)

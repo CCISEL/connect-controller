@@ -3,8 +3,8 @@
 /**
  * Module dependencies.
  */
-const app = require('../index');
-const http = require('http');
+const app = require('../index')
+const http = require('http')
 
 /**
  * Setup and instantiate...
