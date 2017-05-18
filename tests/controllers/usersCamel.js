@@ -1,16 +1,21 @@
 'use strict'
 
 module.exports = {
-    'groups':  function (nr, res) {
-        res.render('viewName', nr)
+    'groups':  function (req, res) {
+        res.render('viewName', req.query.nr)
     },
 
     'index': function () {
         return 'I am index'
     },
 
-    'indexTeamid': function (teamId, reqVar, resLocalVar, appLocalVar) {
-        return { teamId, reqVar, resLocalVar, appLocalVar }
+    'indexTeamid': function (teamId, req, res) {
+        res.render('index', { 
+            teamId, 
+            'reqVar': req.reqVar, 
+            'resLocalVar': res.locals.resLocalVar, 
+            'appLocalVar': req.app.locals.appLocalVar 
+        })
     },
 
     'indexIdMembers':  function () {
@@ -27,15 +32,20 @@ module.exports = {
      * The rest of arguments arg1, and arg2 will be searched in 
      * req, req.query, req.body, etc...
      */
-    'dummyNrTeamsXptoStr':  function (nr, arg1, arg2, str) {
-        return {nr, arg1, arg2, str}
+    'dummyNrTeamsXptoStr':  function (nr, req, str) {
+        return {
+            'nr': nr, 
+            'arg1': req.query.arg1, 
+            'arg2': req.query.arg2, 
+            'str': str
+        }
     },
 
     'xoneStuff': function(stuff, req, next) {
         next()
     },
 
-    'postXone': function(stuff) {
-        return stuff
+    'postXone': function(req) {
+        return req.body.stuff
     }
 }

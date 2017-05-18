@@ -2,18 +2,18 @@
 
 module.exports = function(PromiseCtor){
     const dummyCtr = {
-        'xone_id': function(id) {
+        'xone_id_foo_name': function(id, name) {
             return new PromiseCtor((resolve) => {
-                resolve({
-                    'msg': 'Some Stuff',
-                    'myId': id
-                })
+                resolve({name, id })
             })
         },
         'excep': function() {
             return new PromiseCtor((resolve, reject) => {
                 reject(new Error('Illegal action'))
             })
+        },
+        'barIdFooName': function(id, name, cb) {
+            cb(null, {id, name})
         }
     }
 
@@ -23,10 +23,10 @@ module.exports = function(PromiseCtor){
     return {
         testAsyncAction : function(test) {
             test.expect(2)
-            const req = { 'url': '/xone/27', 'method': 'get'}
+            const req = { 'url': '/xone/27/foo/Stuff', 'method': 'get'}
             const res = { 'render': (view, ctx) => {
-                test.equal(ctx.msg, 'Some Stuff')
-                test.equal(ctx.myId, 27)
+                test.equal(ctx.id, 27)
+                test.equal(ctx.name, 'Stuff')
                 test.done()
             }}
             router(req, res)
@@ -39,6 +39,16 @@ module.exports = function(PromiseCtor){
                 test.equal(err.message, 'Illegal action')
                 test.done()
             })
+            router(req, res)
+        },
+        testActionWithCallback : function(test) {
+            test.expect(2)
+            const req = { 'url': '/bar/23/foo/Jose', 'method': 'get', 'app': {}}
+            const res = { 'render': (view, ctx) => {
+                test.equal(ctx.id, '23')
+                test.equal(ctx.name, 'Jose')
+                test.done()
+            }}
             router(req, res)
         },
     }
