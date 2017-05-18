@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "C:\\Users\\mcarvalho\\AppData\\Roaming\\npm\\node_modules\\nodeunit\\bin\\nodeunit",
             "stopOnEntry": false,
-            "args": ["tests"],
+            "args": ["tests", "-t", "testControllerIndexId"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": {
