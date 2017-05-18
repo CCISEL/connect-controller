@@ -2,6 +2,10 @@
 
 const footballDb = require('./../db/footballDb')
 
+/**
+ * This API is similar to the football.js but with 
+ * node.js callback convention instead of Promises.
+ */
 module.exports = {
     getLeaguesIdTable, // binds to /football/leagues/:id/table
     getLeagues,        // binds to /football/leagues
@@ -15,21 +19,27 @@ module.exports = {
  * In this case this function is useless and we could simply bound 
  * property 'getLeaguesIdTable' to method `footballDb.getLeaguesIdTable`.
  */
-function getLeaguesIdTable(id){
-    return footballDb.getLeaguesIdTable(id)
+function getLeaguesIdTable(id, cb){
+    footballDb
+        .getLeaguesIdTable(id)
+        .then(data => cb(null, data))
+        .catch(err => cb(err))
 }
 
 /**
- * Every action parameter (e.g. name) that is NOT part of the method's name
- * will be searched on req.query, req.body, req, res.locals and req.app.locals.
+ * Every action parameter that is NOT part of the method's name
+ * must be req, res or next.
+ * NOTE that if you receive res, then you are responsible for sending the response.
  */
-function getLeagues(name) {
-    if(name) name = name.toLowerCase()
-    return footballDb
+function getLeagues(req, cb) {
+    const name = req.query.name? req.query.name.toLowerCase() : ''
+    footballDb
         .getLeagues()
         .then(leagues => leagues
             .filter(l => !name || l.caption.toLowerCase().indexOf(name) >= 0)
             .map(addLeaguePath))
+        .then(data => cb(null, data))
+        .catch(err => cb(err))
     
     function addLeaguePath(league) {
         league.leagueHref = '/football/leagues/' + league.id + '/table'

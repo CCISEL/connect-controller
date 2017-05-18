@@ -8,14 +8,12 @@ const path = require('path')
 const favicon = require('serve-favicon')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const favoritesDb = require('./lib/db/favoritesDb')
 const hbs = require('hbs')
-hbs.registerPartials(__dirname + '/lib/views/favorites')
-require('./lib/views/hbs-helpers')
-
+const sitemapHtml = require('express-sitemap-html')
 /**
  * Import local libraries
  */
+const favoritesDb = require('./lib/db/favoritesDb')
 const routeFootball = require('./lib/routes/football')
 const controller = require('./../index')
 
@@ -26,6 +24,8 @@ const app = express()
 app.set('views', path.join(__dirname, 'lib/views'))
 app.set('view engine', 'hbs')
 hbs.localsAsTemplateData(app)
+hbs.registerPartials(__dirname + '/lib/views/favorites')
+require('./lib/views/hbs-helpers')
 
 /**
  * Add Middlewares
@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use((req, res, next) => { 
-    res.locals.favoritesList = favoritesDb // Enhance it with per user favorites based on authentication
+    app.locals.favoritesList = favoritesDb // Enhance it with per user favorites based on authentication
     next()
 })
 
@@ -48,7 +48,7 @@ const football = controller('./lib/controllers', {redirectOnStringResult: true})
 const footballApi = controller('./lib/controllers', {resultHandler: (res, ctx) => res.json(ctx)})
 app.use(football)
 app.use('/api', footballApi)
-
+app.use('/', sitemapHtml(app))
 /**
  * Add Routes
  */

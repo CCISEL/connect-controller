@@ -13,7 +13,7 @@ The [connect-controller](https://www.npmjs.com/package/connect-controller) suppr
 all the [express](https://www.npmjs.com/package/express) web server verbosity
 from a web controller, such as:
 `router.get(...)`; paths specification e.g. `/path/subPath/:routeParam`;
-arguments lookup on `res.query`, `res.params`, etc;  rendering views
+arguments on `res.params;  rendering views
 `res.render(<viewPath>, <context>)`; specifying views paths; etc.
 
 For instance, given a domain service [`footballDb`](example/lib/db/footballDb.js)
@@ -22,12 +22,14 @@ with, and without `connect-controller`,
 in [listing 1](#list-with-connect-ctr) and [listing 2](#list-without-connect-ctr) respectively.
 Both cases build and bind a single endpoint to the path `/leagues/:id/table` which uses the
 [`getLeaguesIdTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
+(**NOTE** that [connect-controller](https://www.npmjs.com/package/connect-controller)
+is also able to parse methods conforming to the node.js callback convention)
 
 <a name="list-with-connect-ctr">
     <em>
         Listing 1 - Build and bind an express route with connect-controller
-        (<a href="https://github.com/CCISEL/connect-controller/blob/master/example/lib/controllers/football.js">
-            example/lib/controllers/football.js
+        (<a href="https://github.com/CCISEL/connect-controller/blob/master/example/lib/controllers/footasync.js">
+            example/lib/controllers/footasync.js
         </a>):
     </em>
 </a>
@@ -36,7 +38,7 @@ Both cases build and bind a single endpoint to the path `/leagues/:id/table` whi
 const connectCtr = require('connect-controller')
 const getLeaguesIdTable = footballDb.getLeaguesIdTable
 const controller = { getLeaguesIdTable }
-app.use('football', connectCtr(controller))
+app.use('footasync', connectCtr(controller))
 ```  
 
 <a name="list-without-connect-ctr">
@@ -80,8 +82,7 @@ By default, every controller method (_Action_) is mapped to a route with the pat
 
 Put it simply, for each action method:
 
-* the `connect-controller` searches for a matching argument in `req`, `req.query`, `req.body`, 
-`res.locals` and `req.app.locals`;
+* the `connect-controller` searches for a matching argument in `req.params`;
 * to bind action parameters to _route parameters_ you just need to include
 the parameters names in the method's name interleaved by `_` or different case;
 * if you want to handle an HTTP method (i.e. verb) different from GET you just need to
@@ -100,6 +101,9 @@ following additional conventions, such as:
    * prefix HTTP method, e.g. `get_<action name>`, `post_<action name>`, etc; 
    * `req`, `res` and `next` are reserved parameters names (optional in action arguments
    list) binding to Middleware `req`, `res` and `next`.
+   * whenever an action receives the `res` parameter, the connect-controller
+   gets out of the way and delegates on that action the responsibility of
+   sending the response.
    * `index` reserved method name, which maps to a route corresponding to the Controller's
    name
 
@@ -120,7 +124,8 @@ Given for example a controller [`football.js`](example/lib/controllers/football.
 located in application root `/controllers`
 folder you may add all `football.js` actions as routes of an express `app` just taking
 the following steps.
-In this example we are adding two routers: one to render views (the default behavior of `connect-controller`) and another to serialize the context objects to json.
+In this example we are adding 4 routers: one to render views (the default behavior of `connect-controller`) for `football.js` (callback based) and for `footasync.js`
+(promise based) and two more to serialize the context objects to json.
 The latter routes with prefix `/api`.
 Note that we are using exactly the same controller module to build both router objects.
 The only difference is in the options object which includes a `resultHandler` for the latter.
@@ -130,7 +135,7 @@ const express = require('express')
 const connectCtr = require('connect-controller')
 const app = express()
 app.use(connectCtr(
-  './controllers',
+  './controllers', // contains football.js and footasync.js
   { redirectOnStringResult: true }
 ))
 app.use('/api', connectCtr(
@@ -140,15 +145,15 @@ app.use('/api', connectCtr(
 /**
  * Alternatives:
  * app.use(connectCtr())                                      // loads all controllers located in controllers folder
- * app.use(connectCtr(require('./controllers/football.js')))  // loads a single controller object
+ * app.use(connectCtr(require('./controllers/footasync.js')))  // loads a single controller object
  * app.use(connectCtr(                                        // loads a single controller object with name soccer
- *   require('./controllers/football.js'),
+ *   require('./controllers/footasync.js'),
  *   { name: 'soccer'} 
  * ))  
  */
 ```
 
-In this case `football.js` could be for example:
+In this case `footasync.js` could be for example:
 
 ```js
 const footballDb = require('./../db/footballDb')
@@ -160,10 +165,10 @@ const footballDb = require('./../db/footballDb')
  * underscores by different case.
  */
 module.exports = {
-    leagues_id_table, // binds to /football/leagues/:id/table
-    leagues,          // binds to /football/leagues
-    index,            // binds to /football/
-    index_id          // binds to /football/:id
+    leagues_id_table, // binds to /footasync/leagues/:id/table
+    leagues,          // binds to /footasync/leagues
+    index,            // binds to /footasync/
+    index_id          // binds to /footasync/:id
 }
 
 /**
@@ -199,23 +204,31 @@ function index(res) {
      * Once this controller is loaded with an options object set with
      * the property `redirectOnStringResult` then this is equivalent
      * to removing the `res` parameter and just return the destination
-     * string path '/football/leagues'.
+     * string path '/footasync/leagues'.
      */
-    res.redirect('/football/leagues')
+    res.redirect('/footasync/leagues')
 }
 
 /**
  * If this controller is loaded with an options object set with the property 
  * `redirectOnStringResult` then this action method redirects to 
- * `/football/leagues/:id/table`.
+ * `/footasync/leagues/:id/table`.
  */
 function index_id(id) {
-    return '/football/leagues/' + id + '/table'
+    return '/footasync/leagues/' + id + '/table'
 }
 
 ```
 
 ## Changelog
+
+### 2.0.1 (May 18, 2017)
+
+Add support for Plain Controller Objects with methods conforming to 
+node.js callback convention.
+Remove the automatic binding of action arguments to the properties of 
+`req`, `req.query`, `req.body`, `res.locals`, `app.locals`.
+Now you have to receive a `req` or `res` and look for desired  properties.
 
 ### 1.3.0 (February 8, 2017)
 
