@@ -13,14 +13,14 @@ The [connect-controller](https://www.npmjs.com/package/connect-controller) suppr
 all the [express](https://www.npmjs.com/package/express) web server verbosity
 from a web controller, such as:
 `router.get(...)`; paths specification e.g. `/path/subPath/:routeParam`;
-arguments on `res.params;  rendering views
+arguments lookup on `res.params`;  rendering views
 `res.render(<viewPath>, <context>)`; specifying views paths; etc.
 
 For instance, given a domain service [`footballDb`](example/lib/db/footballDb.js)
 with a promises based API, **compare** the two approaches of building a `football` router
 with, and without `connect-controller`,
 in [listing 1](#list-with-connect-ctr) and [listing 2](#list-without-connect-ctr) respectively.
-Both cases build and bind a single endpoint to the path `/leagues/:id/table` which uses the
+Both cases build and bind a single route to the path `/leagues/:id/table` which uses the
 [`getLeaguesIdTable(id)`](example/lib/db/footballDb.js#L35) method of `footballDb`.
 (**NOTE** that [connect-controller](https://www.npmjs.com/package/connect-controller)
 is also able to parse methods conforming to the node.js callback convention)
@@ -124,10 +124,10 @@ Given for example a controller [`football.js`](example/lib/controllers/football.
 located in application root `/controllers`
 folder you may add all `football.js` actions as routes of an express `app` just taking
 the following steps.
-In this example we are adding 4 routers: one to render views (the default behavior of `connect-controller`) for `football.js` (callback based) and for `footasync.js`
-(promise based) and two more to serialize the context objects to json.
+In this example we are adding 4 routers: one to render views (the default behavior of `connect-controller`) for `football.js` (callback based) and other router for`footasync.js`
+(promise based) and two more routers to serialize the context objects to json.
 The latter routes with prefix `/api`.
-Note that we are using exactly the same controller module to build both router objects.
+Note that we are using exactly the same controller module to build all router objects.
 The only difference is in the options object which includes a `resultHandler` for the latter.
 
 ```js
